@@ -127,6 +127,13 @@ func _check_reachability() -> void:
 			unreachable.append(station.display_name)
 	_check(unreachable.is_empty(), "所有设备交互点均可步行到达",
 		"无法到达: " + ", ".join(unreachable))
+	var blocked_points: Array[String] = []
+	for node in get_tree().get_nodes_in_group("stations"):
+		var station := node as Station
+		if not manager.player._can_stand(station.get_interaction_position()):
+			blocked_points.append(station.display_name)
+	_check(blocked_points.is_empty(), "所有设备交互点可以直接站到",
+		"被阻挡: " + ", ".join(blocked_points))
 
 
 func _teleport_and_interact(path: String) -> bool:
@@ -348,7 +355,20 @@ func _run_tests() -> void:
 	_check(manager.state == GameManager.State.PLAYING, "再按 ESC 恢复营业")
 	_check(not get_tree().paused, "ESC 恢复后场景树继续")
 
-	print("\n[14] 纯数据边界")
+	print("\n[14] 鼠标点击设备（角落生肠）")
+	manager.player.clear_item()
+	if gui_input_available:
+		var sausage_station := manager.get_node("Entities/SausageStation") as Station
+		manager.player.position = sausage_station.get_interaction_position()
+		await _frames(3)
+		await _click_at(sausage_station.get_click_rect().get_center())
+		_check(manager.player.item_type() == "raw_sausage",
+			"鼠标直接点击生肠冷柜可取出生肠", manager.player.item_type())
+		manager.player.clear_item()
+	else:
+		print("  [SKIP] 鼠标点击设备（无头模式没有 GUI 输入）")
+
+	print("\n[15] 纯数据边界")
 	_check(GameData.cook_state(0.0).get("id", "") == "raw", "0 秒为生的")
 	_check(GameData.cook_state(4.0).get("id", "") == "heating", "4 秒为加热中")
 	_check(GameData.cook_state(6.5).get("id", "") == "just_cooked", "6.5 秒为刚刚熟透")
@@ -358,7 +378,7 @@ func _run_tests() -> void:
 		{"sausages": 1, "ketchup": false, "mustard": false}, raw_dog)
 	_check(not bool(validation.get("ok", true)), "生肠不能交付")
 
-	print("\n[15] 自动结束条件")
+	print("\n[16] 自动结束条件")
 	manager.time_left = 0.03
 	manager._process(0.05)
 	_check(manager.state == GameManager.State.GAME_OVER, "营业时间耗尽自动结束")

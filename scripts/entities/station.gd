@@ -59,6 +59,19 @@ func get_obstacle_rect() -> Rect2:
 	return Rect2(global_position + footprint * -0.5, footprint).grow(18.0)
 
 
+func get_click_rect() -> Rect2:
+	# 世界里没有 CollisionShape，鼠标点击用一个覆盖设备本体的宽松矩形。
+	# 顶部留出 170px，能点中柜台上的热狗、面包、酱瓶等高处展示物。
+	var width := maxf(footprint.x, 96.0) + 40.0
+	var height := footprint.y + 198.0
+	return Rect2(global_position + Vector2(-width * 0.5, -170.0),
+		Vector2(width, height))
+
+
+func contains_click_point(point: Vector2) -> bool:
+	return get_click_rect().has_point(point)
+
+
 func get_prompt(_player: Player) -> Dictionary:
 	return {"text": "查看 " + display_name, "enabled": true}
 

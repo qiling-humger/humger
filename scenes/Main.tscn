@@ -77,7 +77,7 @@ footprint = Vector2(180, 94)
 label_offset = Vector2(0, -166)
 
 [node name="KetchupStation" type="Node2D" parent="Entities"]
-position = Vector2(330, 430)
+position = Vector2(370, 420)
 script = ExtResource("8_sauce")
 station_id = "ketchup"
 display_name = "番茄酱"

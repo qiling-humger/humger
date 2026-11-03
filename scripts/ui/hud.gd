@@ -50,6 +50,23 @@ func clear_toasts() -> void:
 	queue_redraw()
 
 
+func is_pointer_over_ui(point: Vector2) -> bool:
+	if not visible:
+		return false
+	var blocking_rects: Array[Rect2] = [
+		Rect2(22, 18, 300, 82),        # 品牌 / 金币
+		Rect2(340, 16, 460, 146),      # 当前订单
+		Rect2(818, 16, 440, 146),      # 时间 / 满意度 / 等待
+		Rect2(22, 590, 300, 108),      # 手持物
+		Rect2(900, 540, 358, 158),     # 煎烤台
+		Rect2(340, 632, 600, 68),      # 交互提示 / 底部操作条
+	]
+	for rect in blocking_rects:
+		if rect.has_point(point):
+			return true
+	return false
+
+
 func _process(delta: float) -> void:
 	_anim += delta
 	if not visible:
@@ -363,7 +380,7 @@ func _draw_interaction_prompt() -> void:
 		var width := 310.0
 		var rect := Rect2(640 - width * 0.5, 651, width, 33)
 		Painter.panel(self, rect, 12, Color(1.0, 0.973, 0.925, 0.82), Color(0.77, 0.67, 0.56, 0.55), 1.4, true)
-		Painter.draw_centered(self, "WASD 移动   ·   E 互动   ·   ESC 暂停", Vector2(640, 673), 11,
+		Painter.draw_centered(self, "WASD 移动  ·  E / 点击设备互动  ·  ESC 暂停", Vector2(640, 673), 11,
 			Color(0.48, 0.37, 0.28, 0.85))
 		return
 	var enabled := bool(prompt.get("enabled", true))

@@ -108,7 +108,7 @@ func _draw_illustration(center: Vector2) -> void:
 func _draw_instructions() -> void:
 	var rows := [
 		{"key": "WASD", "title": "移动", "desc": "在店里走到设备旁边"},
-		{"key": "E", "title": "互动", "desc": "拿取、放上、挤酱、交付"},
+		{"key": "E", "title": "互动", "desc": "靠近按 E，或直接点设备"},
 		{"key": "ESC", "title": "暂停", "desc": "随时喘口气，查看菜单"},
 	]
 	var y := 252.0

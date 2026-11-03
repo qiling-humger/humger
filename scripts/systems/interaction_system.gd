@@ -49,6 +49,39 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("interact"):
 		if try_interact():
 			get_viewport().set_input_as_handled()
+		return
+	if event is InputEventMouseButton:
+		var mouse_event := event as InputEventMouseButton
+		if mouse_event.button_index == MOUSE_BUTTON_LEFT and mouse_event.pressed:
+			if try_click_interact(mouse_event.position):
+				get_viewport().set_input_as_handled()
+
+
+func try_click_interact(screen_point: Vector2) -> bool:
+	if manager == null or player == null or not manager.is_playing():
+		return false
+	# 避免点到 HUD 卡片时误触后面的设备。
+	if manager.ui and manager.ui.hud and manager.ui.hud.visible:
+		if manager.ui.hud.is_pointer_over_ui(screen_point):
+			return false
+	var best: Station = null
+	var best_center_distance := 99999.0
+	for node in get_tree().get_nodes_in_group("stations"):
+		var station := node as Station
+		if station == null or not station.contains_click_point(screen_point):
+			continue
+		var center_distance := station.global_position.distance_to(screen_point)
+		if center_distance < best_center_distance:
+			best_center_distance = center_distance
+			best = station
+	if best == null:
+		return false
+	var interact_distance := player.global_position.distance_to(best.get_interaction_position())
+	if interact_distance > best.interaction_radius:
+		manager.notify("离%s还有点远，走近一点再操作。" % best.display_name, Painter.BROWN)
+		return true
+	best.interact(player)
+	return true
 
 
 func try_interact() -> bool:
