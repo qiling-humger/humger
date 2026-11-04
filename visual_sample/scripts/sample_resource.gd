@@ -25,22 +25,35 @@ func _apply_texture(key: String, base_pad: float) -> void:
 	_sprite.position = Vector2(
 		-float(texture.get_width()) * display_scale * 0.5,
 		-float(texture.get_height()) * display_scale + base_pad * display_scale)
+	_sprite.modulate = Color.WHITE
 	_sprite.visible = true
+
+
+func _show_depleted_visual() -> void:
+	if node_type == "tree" and game.has_asset("stump"):
+		_apply_texture("stump", game.get_asset_base_pad("stump"))
+	else:
+		_sprite.modulate = Color(1, 1, 1, 0.42)
+		var base_scale: float = game.get_asset_scale(node_type)
+		var shrink := base_scale * 0.80
+		_sprite.scale = Vector2(shrink, shrink)
+		var tex_h := float(_sprite.texture.get_height()) if _sprite.texture else 0.0
+		var pad: float = game.get_asset_base_pad(node_type)
+		_sprite.position.y = -tex_h * shrink + pad * shrink
+
+
+func restore_uses(value: int) -> void:
+	uses_left = maxi(0, value)
+	if uses_left <= 0:
+		_show_depleted_visual()
+	else:
+		_apply_texture(node_type, game.get_asset_base_pad(node_type))
 
 
 func gather() -> Dictionary:
 	var info := super.gather()
 	if not info.is_empty() and is_depleted():
-		if node_type == "tree" and game.has_asset("stump"):
-			_apply_texture("stump", game.get_asset_base_pad("stump"))
-		else:
-			_sprite.modulate = Color(1, 1, 1, 0.42)
-			var base_scale: float = game.get_asset_scale(node_type)
-			var shrink := base_scale * 0.80
-			_sprite.scale = Vector2(shrink, shrink)
-			var tex_h := float(_sprite.texture.get_height()) if _sprite.texture else 0.0
-			var pad: float = game.get_asset_base_pad(node_type)
-			_sprite.position.y = -tex_h * shrink + pad * shrink
+		_show_depleted_visual()
 	return info
 
 

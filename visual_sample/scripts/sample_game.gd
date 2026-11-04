@@ -10,6 +10,9 @@ extends Node2D
 @onready var placement: VisualSamplePlacement = $Placement
 @onready var ui: VisualSampleUI = $UI/HUD
 
+@export var config_path := "res://visual_sample/data/sample_config.json"
+@export var asset_catalog_path := "res://visual_sample/data/asset_catalog.json"
+
 var config: Dictionary = {}
 var asset_catalog: Dictionary = {}
 var grid: IslandGrid
@@ -25,8 +28,8 @@ var _texture_cache: Dictionary = {}
 
 
 func _ready() -> void:
-	config = _load_json("res://visual_sample/data/sample_config.json")
-	asset_catalog = _load_json("res://visual_sample/data/asset_catalog.json")
+	config = _load_json(config_path)
+	asset_catalog = _load_json(asset_catalog_path)
 	if config.is_empty() or asset_catalog.is_empty():
 		push_error("VisualSampleGame: 配置或资产目录读取失败。")
 		return
@@ -46,8 +49,12 @@ func _ready() -> void:
 	_spawn_resources()
 	_spawn_initial_objects()
 	ui.setup(self)
-	ui.add_toast("视觉样板：独立 Sprite、隐藏网格、8×8 小岛。", Painter.TEAL)
+	ui.add_toast(_welcome_toast_text(), Painter.TEAL)
 	set_process(true)
+
+
+func _welcome_toast_text() -> String:
+	return "视觉样板：独立 Sprite、隐藏网格、8×8 小岛。"
 
 
 func _spawn_cell() -> Vector2i:
