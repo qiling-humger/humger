@@ -12,6 +12,7 @@ ITEMS = [
     ("tree", "props/source/tree.jpg", "props/transparent/tree.png", 16),
     ("rock", "props/source/rock.jpg", "props/transparent/rock.png", 16),
     ("table", "furniture/source/table.jpg", "furniture/transparent/table.png", 16),
+    ("table_rotated", "furniture/source/table_rotated.jpg", "furniture/transparent/table_rotated.png", 16),
 ]
 
 

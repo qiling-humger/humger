@@ -3,6 +3,7 @@ extends IslandResourceNode
 ## 资源节点的 Sprite 版视觉层。采集次数、占格和碰撞仍由 IslandResourceNode 负责。
 
 var _sprite: Sprite2D
+var _bottom_pad := 0.0
 
 
 func setup(id_value: String, type_value: String, cell_value: Vector2i,
@@ -20,11 +21,12 @@ func _apply_texture(key: String, base_pad: float) -> void:
 	if texture == null:
 		return
 	var display_scale: float = game.get_asset_scale(key)
+	_bottom_pad = VisualAnchor.bottom_pad(texture, base_pad)
 	_sprite.texture = texture
 	_sprite.scale = Vector2(display_scale, display_scale)
 	_sprite.position = Vector2(
 		-float(texture.get_width()) * display_scale * 0.5,
-		-float(texture.get_height()) * display_scale + base_pad * display_scale)
+		-float(texture.get_height()) * display_scale + _bottom_pad * display_scale)
 	_sprite.modulate = Color.WHITE
 	_sprite.visible = true
 
@@ -38,8 +40,7 @@ func _show_depleted_visual() -> void:
 		var shrink := base_scale * 0.80
 		_sprite.scale = Vector2(shrink, shrink)
 		var tex_h := float(_sprite.texture.get_height()) if _sprite.texture else 0.0
-		var pad: float = game.get_asset_base_pad(node_type)
-		_sprite.position.y = -tex_h * shrink + pad * shrink
+		_sprite.position.y = -tex_h * shrink + _bottom_pad * shrink
 
 
 func restore_uses(value: int) -> void:

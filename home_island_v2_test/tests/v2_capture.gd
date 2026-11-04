@@ -13,18 +13,38 @@ func _ready() -> void:
 	game.ui._toasts.clear()
 	game.ui.queue_redraw()
 	await _frames(30)
-	await _shot("01_normal.png")
+	await _shot("05_normal_grounded.png")
 
 	game.toggle_build_mode()
 	game.select_buildable(0)
-	var target := Vector2i(11, 8)
-	var center := game.grid.world_from_float(Vector2(target.x + 0.5, target.y))
+	var target := Vector2i(7, 8)
+	var center := game.grid.world_from_float(Vector2(target.x, target.y + 0.5))
+	# Freeze the game's mouse-follow preview so the screenshot frame is deterministic.
+	game.set_process(false)
+	game.placement.update_preview(center)
+	game.placement.rotate_preview(1)
 	game.placement.update_preview(center)
 	game.placement._process(0.0)
-	game.set_process(false)
-	game.placement.set_process(false)
 	await _frames(4)
-	await _shot("02_build.png")
+	print("BUILD ghost=", game.placement.get("_ghost").visible,
+		" preview=", game.placement.preview_valid,
+		" origin=", game.placement.preview_origin,
+		" grid=", game.terrain.is_grid_visible())
+	await _shot("06_build_rotated.png")
+
+	game.placement.try_place_at(center)
+	game.exit_build_mode()
+	game.terrain.set_build_mode(false)
+	var grid_overlay := game.terrain.get("_grid_overlay") as Node2D
+	if grid_overlay:
+		grid_overlay.visible = false
+		grid_overlay.queue_redraw()
+	game.placement.has_preview = false
+	game.placement._process(0.0)
+	await _frames(20)
+	print("NORMAL grid=", game.terrain.is_grid_visible(),
+		" objects=", game.placed_objects.size())
+	await _shot("07_placed_rotated.png")
 	get_tree().quit(0)
 
 

@@ -100,7 +100,7 @@ func _spawn_initial_objects() -> void:
 			continue
 		var cell_array: Array = entry.get("cell", [0, 0])
 		var cell := Vector2i(int(cell_array[0]), int(cell_array[1]))
-		spawn_placeable(def, cell)
+		spawn_placeable(def, cell, int(entry.get("rotation", 0)))
 
 
 func find_def(type_id: String) -> Dictionary:
@@ -111,16 +111,29 @@ func find_def(type_id: String) -> Dictionary:
 
 
 func get_asset_texture(key: String) -> Texture2D:
+	return get_asset_texture_for_rotation(key, 0)
+
+
+func get_asset_texture_for_rotation(key: String, rotation_quarters: int) -> Texture2D:
 	var props: Dictionary = asset_catalog.get("props", {})
 	var data: Dictionary = props.get(key, {})
 	if data.is_empty():
 		return null
 	var path := str(data.get("texture", ""))
+	if posmod(rotation_quarters, 4) % 2 == 1:
+		var rotated_path := str(data.get("rotated_texture", ""))
+		if not rotated_path.is_empty():
+			path = rotated_path
 	if path.is_empty():
 		return null
 	if not _texture_cache.has(path):
 		_texture_cache[path] = load(path)
 	return _texture_cache[path] as Texture2D
+
+
+func has_rotated_texture(key: String) -> bool:
+	var data: Dictionary = asset_catalog.get("props", {}).get(key, {})
+	return not str(data.get("rotated_texture", "")).is_empty()
 
 
 func get_asset_base_pad(key: String) -> float:
@@ -139,16 +152,17 @@ func has_asset(key: String) -> bool:
 	return get_asset_texture(key) != null
 
 
-func spawn_placeable(def: Dictionary, origin: Vector2i) -> VisualSamplePlaceable:
+func spawn_placeable(def: Dictionary, origin: Vector2i, rotation_value := 0) -> VisualSamplePlaceable:
 	if def.is_empty():
 		return null
-	var size := Vector2i(int(def.get("width", 1)), int(def.get("height", 1)))
+	var base_size := Vector2i(int(def.get("width", 1)), int(def.get("height", 1)))
+	var size := IslandPlaceable.rotated_size(base_size, rotation_value)
 	if not grid.can_place(origin, size):
 		return null
 	var object_id := "sample_object_%d" % _next_object_id
 	_next_object_id += 1
 	var object := VisualSamplePlaceable.new()
-	object.setup(object_id, def, origin, grid, self)
+	object.setup(object_id, def, origin, grid, self, rotation_value)
 	entities.add_child(object)
 	grid.reserve(object.get_cells(), object_id, bool(def.get("blocking", true)))
 	placed_objects.append(object)
@@ -171,7 +185,7 @@ func toggle_build_mode() -> void:
 		placement.enter_build_mode()
 		_clear_nearest_highlight()
 		nearest_resource = null
-		ui.add_toast("建造模式：1-3 选物件，左键放置，Esc 退出。", Painter.BROWN)
+		ui.add_toast("建造模式：1-3 选物件，R/Shift+R 旋转，左键放置，Esc 退出。", Painter.BROWN)
 
 
 func exit_build_mode() -> void:
@@ -263,6 +277,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		if key == KEY_ESCAPE:
 			if placement.cancel():
 				get_viewport().set_input_as_handled()
+			return
+		if key == KEY_R and (placement.build_mode or placement.is_dragging()):
+			placement.rotate_preview(-1 if key_event.shift_pressed else 1)
+			ui.add_toast("已旋转 90° · %d×%d" % [placement.preview_size.x, placement.preview_size.y],
+				Painter.TEAL if placement.preview_valid else Painter.CORAL_DARK)
+			get_viewport().set_input_as_handled()
 			return
 		if placement.build_mode:
 			for i in range(3):

@@ -41,7 +41,8 @@ func _seed_default_objects() -> void:
 		if def.is_empty():
 			continue
 		var cell_array: Array = entry.get("cell", [0, 0])
-		spawn_placeable(def, Vector2i(int(cell_array[0]), int(cell_array[1])))
+		spawn_placeable(def, Vector2i(int(cell_array[0]), int(cell_array[1])),
+			int(entry.get("rotation", 0)))
 
 
 func _process(delta: float) -> void:
@@ -118,6 +119,7 @@ func save_game(path: String = "") -> bool:
 			data["objects"].append({
 				"id": str(object.def.get("id", "")),
 				"origin": [object.origin.x, object.origin.y],
+				"rotation": object.rotation_quarters,
 			})
 	var file := FileAccess.open(target, FileAccess.WRITE)
 	if file == null:
@@ -198,7 +200,9 @@ func load_game(path: String = "") -> bool:
 		var def := find_def(str(id_value))
 		if def.is_empty():
 			continue
-		spawn_placeable(def, Vector2i(int(origin_array[0]), int(origin_array[1])))
+		var rotation_value: Variant = item.get("rotation", 0)
+		var rotation := int(rotation_value) if _is_number(rotation_value) else 0
+		spawn_placeable(def, Vector2i(int(origin_array[0]), int(origin_array[1])), rotation)
 
 	var saved_player: Dictionary = player_value
 	var pos_value: Variant = saved_player.get("position", [])

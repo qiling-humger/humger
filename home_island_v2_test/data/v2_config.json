@@ -27,7 +27,7 @@
     {"id": "v2_rock_3", "type": "rock", "cell": [8, 10]}
   ],
   "placeables": [
-    {"id": "table", "name": "木桌", "width": 2, "height": 1, "blocking": true, "color": "#C8733E", "description": "2×1 · 可自由摆放"}
+    {"id": "table", "name": "木桌", "width": 2, "height": 1, "blocking": true, "allow_rotation": true, "anchor": "bottom_center", "color": "#C8733E", "description": "2×1 · 可自由摆放与旋转"}
   ],
   "initial_objects": [
     {"type": "table", "cell": [8, 6]}

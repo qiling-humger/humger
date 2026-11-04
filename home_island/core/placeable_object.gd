@@ -6,7 +6,9 @@ extends Node2D
 var object_id := ""
 var def: Dictionary = {}
 var origin := Vector2i.ZERO
+var base_size := Vector2i.ONE
 var size := Vector2i.ONE
+var rotation_quarters := 0
 var blocking := true
 var grid: IslandGrid
 var game: Node
@@ -15,12 +17,18 @@ var _dragging := false
 var _time := 0.0
 
 
+static func rotated_size(base: Vector2i, quarters: int) -> Vector2i:
+	return base if posmod(quarters, 4) % 2 == 0 else Vector2i(base.y, base.x)
+
+
 func setup(id_value: String, definition: Dictionary, origin_value: Vector2i,
-		grid_ref: IslandGrid, game_ref: Node) -> void:
+		grid_ref: IslandGrid, game_ref: Node, rotation_value := 0) -> void:
 	object_id = id_value
 	def = definition.duplicate(true)
 	origin = origin_value
-	size = Vector2i(int(def.get("width", 1)), int(def.get("height", 1)))
+	base_size = Vector2i(int(def.get("width", 1)), int(def.get("height", 1)))
+	rotation_quarters = posmod(rotation_value, 4)
+	size = rotated_size(base_size, rotation_quarters)
 	blocking = bool(def.get("blocking", true))
 	grid = grid_ref
 	game = game_ref
@@ -31,7 +39,23 @@ func setup(id_value: String, definition: Dictionary, origin_value: Vector2i,
 func set_origin(new_origin: Vector2i) -> void:
 	origin = new_origin
 	_place_node()
+	_visual_transform_changed()
 	queue_redraw()
+
+
+func set_rotation_quarters(value: int) -> void:
+	var next_rotation := posmod(value, 4)
+	if next_rotation == rotation_quarters:
+		return
+	rotation_quarters = next_rotation
+	size = rotated_size(base_size, rotation_quarters)
+	_place_node()
+	_visual_transform_changed()
+	queue_redraw()
+
+
+func _visual_transform_changed() -> void:
+	pass
 
 
 func get_cells() -> Array[Vector2i]:

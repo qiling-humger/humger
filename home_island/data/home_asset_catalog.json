@@ -74,6 +74,7 @@
     },
     "table": {
       "texture": "res://assets/art_staging/stage_02/furniture/transparent_png/table.png",
+      "rotated_texture": "res://assets/art_staging/stage_02/furniture/transparent_png/table_rotated.png",
       "grid_size": [2, 1],
       "base_pad": 16,
       "display_scale": 0.20

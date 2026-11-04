@@ -120,6 +120,7 @@ func _run_tests() -> void:
 		_check(game.inventory.get_count("stone") == 3, "石头累计 3",
 			str(game.inventory.get_count("stone")))
 
+	var rotated_origin := Vector2i(-9, -9)
 	print("\n[4] 建造 / 绿红预览 / 多格 / 拆除")
 	game.toggle_build_mode()
 	_check(game.placement.build_mode, "B 建造模式开启")
@@ -149,6 +150,63 @@ func _run_tests() -> void:
 	_check(game.placed_objects.size() == count_before, "拆除后物件数量恢复")
 	_check(game.grid.can_place(target, Vector2i(2, 1)), "拆除后占格释放")
 
+	print("\n[4b] 旋转 / 占地 / 碰撞 / 存档")
+	game.toggle_build_mode()
+	game.select_buildable(1)
+	var rotated_target := _find_empty(Vector2i(1, 2))
+	var rotated_world := game.grid.world_from_float(
+		Vector2(rotated_target.x, rotated_target.y + 0.5))
+	game.placement.update_preview(rotated_world)
+	_check(game.placement.preview_size == Vector2i(2, 1), "未旋转时桌子 2×1")
+	game.placement.rotate_preview(1)
+	_check(game.placement.preview_rotation == 1
+		and game.placement.preview_size == Vector2i(1, 2),
+		"旋转 90° 后宽高互换")
+	game.placement.rotate_preview(1)
+	_check(game.placement.preview_size == Vector2i(2, 1), "连续旋转 180° 恢复 2×1")
+	game.placement.rotate_preview(1)
+	_check(game.placement.preview_size == Vector2i(1, 2), "连续旋转 270° 为 1×2")
+	game.placement.rotate_preview(1)
+	_check(game.placement.preview_size == Vector2i(2, 1), "连续旋转 360° 回到 2×1")
+	game.placement.rotate_preview(-1)
+	_check(game.placement.preview_rotation == 3
+		and game.placement.preview_size == Vector2i(1, 2),
+		"Shift+R 逆时针旋转 90°")
+	game.placement.rotate_preview(1)
+	_check(game.placement.preview_rotation == 0
+		and game.placement.preview_size == Vector2i(2, 1),
+		"顺时针旋转回 2×1")
+	game.placement.rotate_preview(1)
+	_check(game.placement.preview_rotation == 1
+		and game.placement.preview_size == Vector2i(1, 2),
+		"确认前回到 1×2 朝向")
+	game.placement.update_preview(game.grid.cell_to_world(Vector2i(0, 0)))
+	_check(not game.placement.preview_valid, "旋转后水面为红色非法预览")
+	game.placement.update_preview(rotated_world)
+	_check(game.placement.preview_valid, "旋转后合法位置为绿色预览")
+	var before_rotated := game.placed_objects.size()
+	_check(game.placement.try_place_at(rotated_world), "旋转后的桌子放置成功")
+	_check(game.placed_objects.size() == before_rotated + 1, "旋转桌子数量增加")
+	var rotated_table: VisualSamplePlaceable = game.placed_objects.back()
+	rotated_origin = rotated_table.origin
+	_check(rotated_table.rotation_quarters == 1
+		and rotated_table.size == Vector2i(1, 2),
+		"放置后保留 1×2 朝向")
+	_check(not game.grid.can_place(rotated_origin, Vector2i(1, 2)),
+		"旋转后的占格参与碰撞")
+	var pivot := rotated_table.get("_pivot") as Node2D
+	_check(pivot != null
+		and pivot.position.is_equal_approx(
+			rotated_table.get_footprint_center() - rotated_table.position),
+		"旋转物件使用统一底部锚点")
+	var rotated_sprite := rotated_table.get("_sprite") as Sprite2D
+	_check(rotated_sprite != null
+		and rotated_sprite.texture.resource_path.contains("table_rotated")
+		and VisualAnchor.bottom_pad(rotated_sprite.texture) > 0.0,
+		"旋转视觉使用 1×2 变体贴图且底部 alpha 对齐")
+	_check(game.has_rotated_texture("table"), "旋转变体贴图已配置")
+	game.exit_build_mode()
+
 	print("\n[5] 搬动 / 非法回滚")
 	var crate: VisualSamplePlaceable = null
 	for object in game.placed_objects:
@@ -166,6 +224,10 @@ func _run_tests() -> void:
 		_check(game.placement.preview_valid, "搬动合法预览绿色")
 		game.placement.finish_drag(game.grid.cell_to_world(move_target))
 		_check(crate.origin == move_target, "木箱搬动成功", str(crate.origin))
+		var crate_pivot := crate.get("_pivot") as Node2D
+		_check(crate_pivot != null and crate_pivot.position.is_equal_approx(
+			crate.get_footprint_center() - crate.position),
+			"1×1 物件统一底部锚点")
 		game.placement.begin_drag(game.grid.cell_to_world(move_target))
 		game.placement.finish_drag(game.grid.cell_to_world(Vector2i(0, 0)))
 		_check(crate.origin == move_target, "非法搬动回滚", str(crate.origin))
@@ -200,6 +262,14 @@ func _run_tests() -> void:
 			break
 	_check(restored_crate != null and restored_crate.origin == saved_crate_origin,
 		"物件位置恢复", str(restored_crate.origin if restored_crate else Vector2i(-1, -1)))
+	var restored_rotated: VisualSamplePlaceable = null
+	for object in game.placed_objects:
+		if object.origin == rotated_origin and str(object.def.get("id", "")) == "table":
+			restored_rotated = object
+			break
+	_check(restored_rotated != null and restored_rotated.rotation_quarters == 1
+		and restored_rotated.size == Vector2i(1, 2),
+		"旋转方向存档恢复")
 	_check(game.grid.world_to_cell(game.player.position) == saved_player_cell,
 		"角色位置恢复", str(game.grid.world_to_cell(game.player.position)))
 

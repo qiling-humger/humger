@@ -14,10 +14,13 @@ var selected_index := 0
 var has_preview := false
 var preview_origin := Vector2i.ZERO
 var preview_size := Vector2i.ONE
+var preview_rotation := 0
 var preview_valid := false
 
 var drag_object: IslandPlaceable
 var drag_start_origin := Vector2i.ZERO
+var drag_start_rotation := 0
+var _last_cursor_world := Vector2.ZERO
 
 
 func setup(game_ref: Node, grid_ref: IslandGrid, entities_ref: Node2D, defs: Array) -> void:
@@ -38,7 +41,8 @@ func current_def() -> Dictionary:
 
 func current_size() -> Vector2i:
 	var def := current_def()
-	return Vector2i(int(def.get("width", 1)), int(def.get("height", 1)))
+	var base := Vector2i(int(def.get("width", 1)), int(def.get("height", 1)))
+	return IslandPlaceable.rotated_size(base, preview_rotation)
 
 
 func enter_build_mode() -> void:
@@ -48,6 +52,7 @@ func enter_build_mode() -> void:
 		cancel_drag()
 	build_mode = true
 	has_preview = true
+	preview_rotation = 0
 	selected_index = clampi(selected_index, 0, maxi(0, definitions.size() - 1))
 	if game.island_map:
 		game.island_map.set_build_mode(true)
@@ -66,6 +71,7 @@ func select_buildable(index: int) -> void:
 	if definitions.is_empty():
 		return
 	selected_index = clampi(index, 0, definitions.size() - 1)
+	preview_rotation = 0
 	has_preview = true
 	queue_redraw()
 
@@ -80,8 +86,10 @@ func _origin_for_cursor(world_pos: Vector2, size: Vector2i) -> Vector2i:
 
 
 func update_preview(world_pos: Vector2) -> void:
+	_last_cursor_world = world_pos
 	if drag_object != null and is_instance_valid(drag_object):
 		preview_size = drag_object.size
+		preview_rotation = drag_object.rotation_quarters
 		preview_origin = _origin_for_cursor(world_pos, preview_size)
 		preview_valid = grid.can_place(preview_origin, preview_size, drag_object.object_id) \
 			and not _player_in_footprint(preview_origin, preview_size)
@@ -98,6 +106,23 @@ func update_preview(world_pos: Vector2) -> void:
 		return
 	has_preview = false
 	queue_redraw()
+
+
+func rotate_preview(direction: int) -> bool:
+	var active_def: Dictionary = drag_object.def if drag_object != null else current_def()
+	if not bool(active_def.get("allow_rotation", true)):
+		return false
+	if drag_object != null and is_instance_valid(drag_object):
+		drag_object.set_rotation_quarters(drag_object.rotation_quarters + direction)
+		preview_rotation = drag_object.rotation_quarters
+		preview_size = drag_object.size
+		update_preview(_last_cursor_world)
+		return true
+	if build_mode:
+		preview_rotation = posmod(preview_rotation + direction, 4)
+		update_preview(_last_cursor_world)
+		return true
+	return false
 
 
 func _player_in_footprint(origin: Vector2i, size: Vector2i) -> bool:
@@ -118,12 +143,12 @@ func try_place_at(world_pos: Vector2) -> bool:
 		game.notify("这里放不下：水面、边界、已有物件或玩家脚下。", Painter.CORAL_DARK)
 		return false
 	var def := current_def()
-	var placed: IslandPlaceable = game.spawn_placeable(def, preview_origin)
+	var placed: IslandPlaceable = game.spawn_placeable(def, preview_origin, preview_rotation)
 	if placed == null:
 		game.notify("这里放不下。", Painter.CORAL_DARK)
 		return false
 	game.notify("已放置 %s（%d×%d）" % [str(def.get("name", "物件")),
-		int(def.get("width", 1)), int(def.get("height", 1))], Painter.TEAL)
+		preview_size.x, preview_size.y], Painter.TEAL)
 	return true
 
 
@@ -136,6 +161,8 @@ func begin_drag(world_pos: Vector2) -> bool:
 		return false
 	drag_object = found
 	drag_start_origin = found.origin
+	drag_start_rotation = found.rotation_quarters
+	preview_rotation = found.rotation_quarters
 	grid.release(found.object_id)
 	found.set_dragging(true)
 	update_preview(world_pos)
@@ -160,6 +187,7 @@ func finish_drag(world_pos: Vector2) -> bool:
 		object.set_dragging(false)
 		game.notify("%s 已搬到新位置。" % str(object.def.get("name", "物件")), Painter.TEAL)
 	else:
+		object.set_rotation_quarters(drag_start_rotation)
 		object.set_origin(drag_start_origin)
 		grid.reserve(object.get_cells(), object.object_id, object.blocking)
 		object.set_dragging(false)
@@ -174,6 +202,7 @@ func finish_drag(world_pos: Vector2) -> bool:
 func cancel_drag() -> void:
 	if drag_object == null or not is_instance_valid(drag_object):
 		return
+	drag_object.set_rotation_quarters(drag_start_rotation)
 	drag_object.set_origin(drag_start_origin)
 	grid.reserve(drag_object.get_cells(), drag_object.object_id, drag_object.blocking)
 	drag_object.set_dragging(false)

@@ -33,8 +33,21 @@
 
 截图：
 
-- `screenshots/01_normal.png`
-- `screenshots/02_build.png`
+- 修复前：`screenshots/before_normal.png`、`before_build.png`
+- 修复后普通态：`screenshots/05_normal_grounded.png`
+- 修复后旋转预览：`screenshots/06_build_rotated.png`
+- 修复后旋转落位：`screenshots/07_placed_rotated.png`
+
+## 本轮场景/建造修复
+
+- 底部锚点按纹理 alpha 最低点计算，不再只依赖 catalog 的 `base_pad`
+- 所有可放置物统一以占地中心为底部中心
+- 阴影跟随占地中心，1×1 / 2×1 / 旋转后 1×2 一致
+- 桌子接入 `R` 顺时针、`Shift+R` 逆时针 90° 旋转
+- 旋转预览、占格宽高、碰撞、绿红状态同步更新
+- 桌子增加 1×2 朝向变体贴图，避免把原 3/4 贴图硬转 90° 后看起来像竖板
+- 存档写入 `rotation`，重新加载后方向保留
+- `allow_rotation` / `anchor` 已进入物件定义；当前只有桌子允许旋转
 
 ## 风格观察
 

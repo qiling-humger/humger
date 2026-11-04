@@ -37,7 +37,7 @@
   "props": {
     "tree": {"texture": "res://assets/art_style_v2_test/props/transparent/tree.png", "grid_size": [1, 1], "base_pad": 16, "display_scale": 0.28},
     "rock": {"texture": "res://assets/art_style_v2_test/props/transparent/rock.png", "grid_size": [1, 1], "base_pad": 16, "display_scale": 0.16},
-    "table": {"texture": "res://assets/art_style_v2_test/furniture/transparent/table.png", "grid_size": [2, 1], "base_pad": 16, "display_scale": 0.14}
+    "table": {"texture": "res://assets/art_style_v2_test/furniture/transparent/table.png", "rotated_texture": "res://assets/art_style_v2_test/furniture/transparent/table_rotated.png", "grid_size": [2, 1], "base_pad": 16, "display_scale": 0.14}
   },
   "terrain": {
     "grass": "res://assets/art_style_v2_test/terrain/transparent/grass.png"
