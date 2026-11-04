@@ -14,8 +14,9 @@ func _ready() -> void:
 	await _frames(30)
 	await _apply_stage_assets()
 	await _frames(300)
-	await _capture()
-	get_tree().quit(0)
+	if OS.get_cmdline_user_args().has("--capture"):
+		await _capture()
+		get_tree().quit(0)
 
 
 func _apply_stage_assets() -> void:
