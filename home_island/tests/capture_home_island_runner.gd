@@ -11,7 +11,7 @@ func _ready() -> void:
 	game.persistence_enabled = false
 	add_child(game)
 	await _frames(300)
-	await _shot("01_home.png")
+	await _shot("01_home_stage02.png")
 
 	game.toggle_build_mode()
 	game.select_buildable(1)
@@ -24,7 +24,7 @@ func _ready() -> void:
 	game.set_process(false)
 	game.placement.set_process(false)
 	await _frames(4)
-	await _shot("02_build.png")
+	await _shot("02_build_stage02.png")
 
 	game.set_process(true)
 	game.placement.set_process(true)
@@ -46,7 +46,7 @@ func _ready() -> void:
 		game.gather_nearest()
 		game.gather_nearest()
 	await _frames(30)
-	await _shot("03_gather.png")
+	await _shot("03_gather_stage02.png")
 	get_tree().quit(0)
 
 

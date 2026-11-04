@@ -45,7 +45,7 @@ run_home_island.bat
 - 4 棵树、4 丛草、3 块石头
 - 普通状态隐藏网格；建造模式显示网格
 - 1×1 木箱/椅子，2×1 桌子
-- 树耗尽变树桩；草/石头耗尽后残留并变淡
+- 树/草/石头耗尽后视觉变淡、缩小并残留
 
 ## 测试
 
@@ -57,12 +57,11 @@ F:\humger\tools\godot\Godot_v4.7.2-stable_win64_console.exe --headless --path F:
 
 截图：
 
-- `screenshots/01_home.png`
-- `screenshots/02_build.png`
-- `screenshots/03_gather.png`
+- `screenshots/01_home_stage02.png`
+- `screenshots/02_build_stage02.png`
+- `screenshots/03_gather_stage02.png`
 
 ## 本阶段不做
 
 - 餐厅、员工、顾客、完整经济系统
 - 整张大地图扩展
-- 重新生成或修改已验收美术
