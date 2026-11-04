@@ -268,7 +268,7 @@ static func draw_food_icon(ci: CanvasItem, kind: String, center: Vector2, scale:
 			ci.draw_line(Vector2(-13, -8), Vector2(-4, -9), Color(1, 1, 1, 0.45), 2.0, true)
 		"cooked_sausage":
 			shadow(ci, Vector2(0, 5), 24, 7, Color(0.2, 0.14, 0.1, 0.13))
-			var sausage_color := GameData.cook_state_color(quality)
+			var sausage_color := _cook_state_color(quality)
 			var outline_color := INK if quality != "burnt" else Color(0.16, 0.12, 0.11)
 			capsule(ci, Vector2(-18, 0), Vector2(18, 0), sausage_color, 15.0, false)
 			ci.draw_line(Vector2(-18, 0), Vector2(18, 0), outline_color, 18.0, true)
@@ -285,7 +285,7 @@ static func draw_food_icon(ci: CanvasItem, kind: String, center: Vector2, scale:
 			ci.draw_polyline(_closed(ellipse_points(Vector2(0, 3), 30, 14)), INK, 2.2, true)
 			ci.draw_colored_polygon(ellipse_points(Vector2(0, -1), 28, 13), Color(0.96, 0.68, 0.36))
 			ci.draw_polyline(_closed(ellipse_points(Vector2(0, -1), 28, 13)), INK, 2.2, true)
-			var sausage_color := GameData.cook_state_color(quality)
+			var sausage_color := _cook_state_color(quality)
 			capsule(ci, Vector2(-22, -5), Vector2(22, -5), sausage_color, 13.0, true)
 			ci.draw_line(Vector2(-14, -8), Vector2(8, -8), Color(1, 1, 1, 0.32), 2.0, true)
 			if bool(sauces.get("ketchup", false)):
@@ -297,6 +297,24 @@ static func draw_food_icon(ci: CanvasItem, kind: String, center: Vector2, scale:
 		_:
 			ci.draw_circle(Vector2.ZERO, 12, LIGHT_GRAY)
 	ci.draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+
+
+static func _cook_state_color(id: String) -> Color:
+	match id:
+		"raw":
+			return PINK
+		"heating":
+			return Color(0.82, 0.55, 0.42)
+		"just_right":
+			return Color(0.78, 0.48, 0.28)
+		"perfect":
+			return Color(0.68, 0.36, 0.18)
+		"overcooked":
+			return Color(0.45, 0.25, 0.13)
+		"burnt":
+			return Color(0.20, 0.14, 0.11)
+		_:
+			return Color(0.66, 0.40, 0.24)
 
 
 static func _draw_sauce_wave(ci: CanvasItem, color: Color, y_offset: float) -> void:

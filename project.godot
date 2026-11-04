@@ -1,20 +1,26 @@
 ; Engine configuration file.
-; 《汉堡物语》第一阶段 MVP
-; Godot 4.7.2
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
 
 config_version=5
 
 [application]
 
 config/name="汉堡物语"
-config/description="一个 45 度斜俯视的卡通热狗店经营游戏。"
-run/main_scene="res://scenes/Main.tscn"
+config/description="一个 45 度斜俯视的卡通家园岛经营游戏。"
+run/main_scene="res://home_island/HomeIsland.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
-[autoload]
+[audio]
 
-SceneManager="*res://scripts/autoload/scene_manager.gd"
+buses/default_bus_layout=""
+
+[autoload]
 
 [display]
 
@@ -23,8 +29,6 @@ window/size/viewport_height=720
 window/size/window_width_override=1280
 window/size/window_height_override=720
 window/stretch/mode="canvas_items"
-window/stretch/aspect="keep"
-window/dpi/allow_hidpi=true
 
 [input]
 
@@ -75,8 +79,3 @@ pause={
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 environment/defaults/default_clear_color=Color(0.98, 0.94, 0.87, 1)
-textures/canvas_textures/default_texture_filter=1
-
-[audio]
-
-buses/default_bus_layout=""

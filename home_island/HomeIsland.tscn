@@ -1,8 +1,8 @@
 [gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://home_island/scripts/home_island_game.gd" id="1_game"]
-[ext_resource type="Script" path="res://map_prototype/scripts/water_background.gd" id="2_water"]
-[ext_resource type="Script" path="res://visual_sample/scripts/sample_terrain.gd" id="3_terrain"]
+[ext_resource type="Script" path="res://home_island/core/water_background.gd" id="2_water"]
+[ext_resource type="Script" path="res://home_island/core/sample_terrain.gd" id="3_terrain"]
 [ext_resource type="Script" path="res://home_island/scripts/home_island_rabbit.gd" id="4_player"]
 [ext_resource type="Script" path="res://home_island/scripts/home_island_placement.gd" id="5_placement"]
 [ext_resource type="Script" path="res://home_island/scripts/home_island_ui.gd" id="6_ui"]
