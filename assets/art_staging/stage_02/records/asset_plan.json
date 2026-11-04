@@ -1,0 +1,36 @@
+{
+  "stage": "stage_02",
+  "source_reference": "可爱白兔角色插画.png",
+  "style": "2D hand-painted cartoon, soft dark-brown ink outline, cream white and pink, upper-left light, pure magenta background, no shadow",
+  "rabbit_frames": [
+    {"name": "idle_down", "input": "rabbit/original_ai/idle_down.png", "output": "rabbit/frames/idle_down.png", "canvas": [360, 420]},
+    {"name": "blink_down", "input": "rabbit/original_ai/blink_down.png", "output": "rabbit/frames/blink_down.png", "canvas": [360, 420]},
+    {"name": "idle_side", "input": "rabbit/original_ai/idle_side.png", "output": "rabbit/frames/idle_side.png", "canvas": [360, 420]},
+    {"name": "blink_side", "input": "rabbit/original_ai/blink_side.png", "output": "rabbit/frames/blink_side.png", "canvas": [360, 420]},
+    {"name": "idle_up", "input": "rabbit/original_ai/idle_up.png", "output": "rabbit/frames/idle_up.png", "canvas": [360, 420]},
+    {"name": "walk_down_00", "input": "rabbit/original_ai/walk_down_00.png", "output": "rabbit/frames/walk_down_00.png", "canvas": [360, 420]},
+    {"name": "walk_down_01", "input": "rabbit/original_ai/walk_down_01.png", "output": "rabbit/frames/walk_down_01.png", "canvas": [360, 420]},
+    {"name": "walk_down_02", "input": "rabbit/original_ai/walk_down_02.png", "output": "rabbit/frames/walk_down_02.png", "canvas": [360, 420]},
+    {"name": "walk_down_03", "input": "rabbit/original_ai/walk_down_03.png", "output": "rabbit/frames/walk_down_03.png", "canvas": [360, 420]},
+    {"name": "walk_side_00", "input": "rabbit/original_ai/walk_side_00.png", "output": "rabbit/frames/walk_side_00.png", "canvas": [360, 420]},
+    {"name": "walk_side_01", "input": "rabbit/original_ai/walk_side_01.png", "output": "rabbit/frames/walk_side_01.png", "canvas": [360, 420]},
+    {"name": "walk_side_02", "input": "rabbit/original_ai/walk_side_02.png", "output": "rabbit/frames/walk_side_02.png", "canvas": [360, 420]},
+    {"name": "walk_side_03", "input": "rabbit/original_ai/walk_side_03.png", "output": "rabbit/frames/walk_side_03.png", "canvas": [360, 420]},
+    {"name": "walk_up_00", "input": "rabbit/original_ai/walk_up_00.png", "output": "rabbit/frames/walk_up_00.png", "canvas": [360, 420]},
+    {"name": "walk_up_01", "input": "rabbit/original_ai/walk_up_01.png", "output": "rabbit/frames/walk_up_01.png", "canvas": [360, 420]},
+    {"name": "walk_up_02", "input": "rabbit/original_ai/walk_up_02.png", "output": "rabbit/frames/walk_up_02.png", "canvas": [360, 420]},
+    {"name": "walk_up_03", "input": "rabbit/original_ai/walk_up_03.png", "output": "rabbit/frames/walk_up_03.png", "canvas": [360, 420]}
+  ],
+  "props": [
+    {"name": "crate", "input": "furniture/original_ai/crate.png", "output": "furniture/transparent_png/crate.png"},
+    {"name": "table", "input": "furniture/original_ai/table.png", "output": "furniture/transparent_png/table.png"},
+    {"name": "chair", "input": "furniture/original_ai/chair.png", "output": "furniture/transparent_png/chair.png"},
+    {"name": "grass_tile", "input": "terrain/original_ai/grass_tile.png", "output": "terrain/transparent_png/grass_tile.png"},
+    {"name": "sand_tile", "input": "terrain/original_ai/sand_tile.png", "output": "terrain/transparent_png/sand_tile.png"}
+  ],
+  "prompts": {
+    "rabbit": "Use the reference white rabbit as the only character; preserve round face, large open eyes, pink inner ears and nose, cream-white fur, soft dark-brown outline; natural rabbit body, no clothes, no props; 2D hand-painted cartoon; full body; pure magenta background; no shadow or text.",
+    "furniture": "Single isolated 2D hand-painted cartoon game prop, same cream/coral/mint palette as the rabbit, soft dark-brown outline, 45-degree isometric view, pure magenta background, no shadow, centered.",
+    "terrain": "Single seamless flat 45-degree isometric grass/sand ground tile, 2D hand-painted cartoon, natural texture, no thickness, no shadow, pure magenta background."
+  }
+}
