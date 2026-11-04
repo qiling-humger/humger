@@ -219,7 +219,9 @@ func _draw_prompt() -> void:
 		prompt = "拖动到空白格  ·  松开确认  ·  Esc 取消"
 		accent = Painter.TEAL
 	elif game.placement.build_mode:
-		prompt = "左键放置  ·  1-4 选择物件  ·  B / Esc 退出"
+		var count := maxi(1, game.placement.definitions.size())
+		var key_hint := "1" if count == 1 else "1-%d" % count
+		prompt = "左键放置  ·  %s 选择物件  ·  B / Esc 退出" % key_hint
 		accent = Painter.BROWN
 	elif game.nearest_resource != null and is_instance_valid(game.nearest_resource):
 		var info: Dictionary = game.nearest_resource.prompt_data()
