@@ -52,5 +52,4 @@ func _update_animation() -> void:
 
 
 func _draw() -> void:
-	# 视觉完全由 AnimatedSprite2D 子节点绘制，不再绘制几何兔。
-	pass
+	Painter.shadow(self, Vector2(0, 2), 19, 7, Color(0.15, 0.20, 0.14, 0.18))

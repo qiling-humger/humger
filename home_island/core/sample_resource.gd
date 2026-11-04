@@ -58,6 +58,15 @@ func gather() -> Dictionary:
 
 
 func _draw() -> void:
+	var shadow_rx := 30.0
+	if node_type == "tree":
+		shadow_rx = 34.0
+	elif node_type == "bush":
+		shadow_rx = 22.0
+	elif node_type == "rock":
+		shadow_rx = 24.0
+	Painter.shadow(self, Vector2(0, 2), shadow_rx, 8.0,
+		Color(0.14, 0.22, 0.13, 0.16))
 	if highlighted:
 		var points := Painter.ellipse_points(Vector2(0, 2), 29, 11, 30)
 		var closed := points.duplicate()

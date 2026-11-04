@@ -13,7 +13,7 @@
   },
   "rabbit": {
     "frame_size": [360, 420],
-    "base_pad": 10,
+    "base_pad": 12,
     "display_scale": 0.46,
     "animations": {
       "idle_down": [
@@ -51,37 +51,37 @@
     "tree": {
       "texture": "res://assets/art_staging/stage_01_base/environment/transparent_png/tree_stage01.png",
       "grid_size": [1, 1],
-      "base_pad": 8,
+      "base_pad": 16,
       "display_scale": 0.32
     },
     "bush": {
       "texture": "res://assets/art_staging/stage_01_base/environment/transparent_png/bush_stage01.png",
       "grid_size": [1, 1],
-      "base_pad": 8,
+      "base_pad": 16,
       "display_scale": 0.15
     },
     "rock": {
       "texture": "res://assets/art_staging/stage_01_base/environment/transparent_png/rock_stage01.png",
       "grid_size": [1, 1],
-      "base_pad": 8,
+      "base_pad": 16,
       "display_scale": 0.14
     },
     "crate": {
       "texture": "res://assets/art_staging/stage_02/furniture/transparent_png/crate.png",
       "grid_size": [1, 1],
-      "base_pad": 8,
+      "base_pad": 16,
       "display_scale": 0.16
     },
     "table": {
       "texture": "res://assets/art_staging/stage_02/furniture/transparent_png/table.png",
       "grid_size": [2, 1],
-      "base_pad": 8,
+      "base_pad": 16,
       "display_scale": 0.20
     },
     "chair": {
       "texture": "res://assets/art_staging/stage_02/furniture/transparent_png/chair.png",
       "grid_size": [1, 1],
-      "base_pad": 8,
+      "base_pad": 16,
       "display_scale": 0.16
     }
   },

@@ -31,5 +31,7 @@ func _update_sprite() -> void:
 
 
 func _draw() -> void:
-	# Sprite 完整接管视觉；逻辑 footprint 仍由父类维护。
-	pass
+	var center := get_footprint_center() - position
+	Painter.shadow(self, center + Vector2(0, 2),
+		28.0 * float(size.x), 8.0 * float(size.y),
+		Color(0.14, 0.20, 0.12, 0.15))
