@@ -137,43 +137,89 @@ func load_game(path: String = "") -> bool:
 	if typeof(parsed) != TYPE_DICTIONARY:
 		return false
 	var data: Dictionary = parsed
-	if int(data.get("version", 0)) != 1 or str(data.get("map", "")) != "home_island_v1":
+	var version_value: Variant = data.get("version", 0)
+	var map_value: Variant = data.get("map", "")
+	if not _is_number(version_value) or int(version_value) != 1:
+		return false
+	if typeof(map_value) != TYPE_STRING or str(map_value) != "home_island_v1":
+		return false
+
+	# Validate top-level containers before clearing the live island. A malformed
+	# save must fail safely or load only known entries, never destroy the scene.
+	var inventory_value: Variant = data.get("inventory", {})
+	var resources_value: Variant = data.get("resources", [])
+	var objects_value: Variant = data.get("objects", [])
+	var player_value: Variant = data.get("player", {})
+	if typeof(inventory_value) != TYPE_DICTIONARY:
+		return false
+	if typeof(resources_value) != TYPE_ARRAY:
+		return false
+	if typeof(objects_value) != TYPE_ARRAY:
+		return false
+	if typeof(player_value) != TYPE_DICTIONARY:
 		return false
 
 	_clear_placed_objects()
 	for id in inventory.order:
 		inventory.counts[id] = 0
-	var saved_inventory: Dictionary = data.get("inventory", {})
+	var saved_inventory: Dictionary = inventory_value
 	for key in saved_inventory.keys():
-		if inventory.counts.has(str(key)):
-			inventory.counts[str(key)] = int(saved_inventory[key])
+		var count_value: Variant = saved_inventory[key]
+		if inventory.counts.has(str(key)) and _is_number(count_value):
+			inventory.counts[str(key)] = maxi(0, int(count_value))
 
 	var saved_resources: Dictionary = {}
-	for item_value in data.get("resources", []):
+	for item_value in resources_value:
+		if typeof(item_value) != TYPE_DICTIONARY:
+			continue
 		var item: Dictionary = item_value
-		saved_resources[str(item.get("id", ""))] = int(item.get("uses_left", 0))
+		var id_value: Variant = item.get("id", "")
+		var uses_value: Variant = item.get("uses_left", 0)
+		if typeof(id_value) != TYPE_STRING or not _is_number(uses_value):
+			continue
+		saved_resources[str(id_value)] = clampi(int(uses_value), 0, 9999)
 	for node in resource_nodes:
 		if is_instance_valid(node) and saved_resources.has(node.node_id):
 			node.restore_uses(int(saved_resources[node.node_id]))
 
-	for item_value in data.get("objects", []):
+	for item_value in objects_value:
+		if typeof(item_value) != TYPE_DICTIONARY:
+			continue
 		var item: Dictionary = item_value
-		var def := find_def(str(item.get("id", "")))
-		var origin_array: Array = item.get("origin", [0, 0])
-		if def.is_empty() or origin_array.size() < 2:
+		var id_value: Variant = item.get("id", "")
+		var origin_value: Variant = item.get("origin", [])
+		if typeof(id_value) != TYPE_STRING or typeof(origin_value) != TYPE_ARRAY:
+			continue
+		var origin_array: Array = origin_value
+		if origin_array.size() < 2:
+			continue
+		if not _is_number(origin_array[0]) or not _is_number(origin_array[1]):
+			continue
+		var def := find_def(str(id_value))
+		if def.is_empty():
 			continue
 		spawn_placeable(def, Vector2i(int(origin_array[0]), int(origin_array[1])))
 
-	var saved_player: Dictionary = data.get("player", {})
-	var pos_array: Array = saved_player.get("position", [])
-	if pos_array.size() >= 2:
-		var saved_pos := Vector2(float(pos_array[0]), float(pos_array[1]))
-		player.position = saved_pos if player.can_stand(saved_pos) else grid.cell_to_world(_spawn_cell())
-	else:
-		player.position = grid.cell_to_world(_spawn_cell())
+	var saved_player: Dictionary = player_value
+	var pos_value: Variant = saved_player.get("position", [])
+	var fallback_pos := grid.cell_to_world(_spawn_cell())
+	player.position = fallback_pos
+	if typeof(pos_value) == TYPE_ARRAY:
+		var pos_array: Array = pos_value
+		if pos_array.size() >= 2 and _is_number(pos_array[0]) and _is_number(pos_array[1]):
+			var x := float(pos_array[0])
+			var y := float(pos_array[1])
+			if absf(x) < 1000000.0 and absf(y) < 1000000.0:
+				var saved_pos := Vector2(x, y)
+				if player.can_stand(saved_pos):
+					player.position = saved_pos
 	player.camera.reset_smoothing()
 	_autosave_elapsed = 0.0
 	return true
+
+
+func _is_number(value: Variant) -> bool:
+	return typeof(value) == TYPE_INT or typeof(value) == TYPE_FLOAT
 
 
 func _clear_placed_objects() -> void:

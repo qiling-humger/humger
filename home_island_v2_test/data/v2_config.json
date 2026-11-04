@@ -1,0 +1,35 @@
+{
+  "map": {"columns": 16, "rows": 12, "tile_width": 96, "tile_height": 48},
+  "island": {
+    "center": [7.5, 5.5],
+    "radius": [6.6, 4.6],
+    "sand_threshold": 1.0,
+    "clearing_center": [99, 99],
+    "clearing_radius": [0.01, 0.01]
+  },
+  "player": {"spawn": [7, 6], "speed": 190.0, "interaction_radius": 84.0},
+  "resource_order": ["wood", "stone"],
+  "resource_types": {
+    "wood": {"name": "木材", "color": "#9A613D", "icon": "log"},
+    "stone": {"name": "石头", "color": "#838681", "icon": "stone"}
+  },
+  "node_types": {
+    "tree": {"name": "小树", "resource": "wood", "amount": 2, "uses": 3, "blocking": true, "verb": "摇树"},
+    "rock": {"name": "石块", "resource": "stone", "amount": 1, "uses": 3, "blocking": true, "verb": "敲石头"}
+  },
+  "resource_nodes": [
+    {"id": "v2_tree_1", "type": "tree", "cell": [2, 5]},
+    {"id": "v2_tree_2", "type": "tree", "cell": [10, 3]},
+    {"id": "v2_tree_3", "type": "tree", "cell": [12, 7]},
+    {"id": "v2_tree_4", "type": "tree", "cell": [4, 8]},
+    {"id": "v2_rock_1", "type": "rock", "cell": [13, 5]},
+    {"id": "v2_rock_2", "type": "rock", "cell": [6, 2]},
+    {"id": "v2_rock_3", "type": "rock", "cell": [8, 10]}
+  ],
+  "placeables": [
+    {"id": "table", "name": "木桌", "width": 2, "height": 1, "blocking": true, "color": "#C8733E", "description": "2×1 · 可自由摆放"}
+  ],
+  "initial_objects": [
+    {"type": "table", "cell": [8, 6]}
+  ]
+}

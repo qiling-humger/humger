@@ -6,6 +6,10 @@ var grid: IslandGrid
 var game: Node
 var catalog: Dictionary
 
+@export var tile_overlap := 1.12
+@export var grass_base_color := Color(0.61, 0.79, 0.47)
+@export var sand_base_color := Color(0.93, 0.81, 0.59)
+
 var _base_root: Node2D
 var _tile_root: Node2D
 var _coast_overlay: VisualSampleOverlay
@@ -48,8 +52,8 @@ func _build_base() -> void:
 	for cell in grid.get_land_cells():
 		var polygon := Polygon2D.new()
 		polygon.polygon = grid.get_diamond(cell, -2.0)
-		polygon.color = Color(0.61, 0.79, 0.47) if grid.terrain_at(cell) != IslandGrid.SAND \
-			else Color(0.93, 0.81, 0.59)
+		polygon.color = grass_base_color if grid.terrain_at(cell) != IslandGrid.SAND \
+			else sand_base_color
 		_base_root.add_child(polygon)
 
 
@@ -72,8 +76,8 @@ func _build_tiles() -> void:
 		sprite.position = grid.cell_to_world(cell)
 		# 轻微重叠，避免透明菱形边缘拼出 1px 网格感。
 		sprite.scale = Vector2(
-			grid.tile_width / float(texture.get_width()) * 1.12,
-			grid.tile_height / float(texture.get_height()) * 1.12
+			grid.tile_width / float(texture.get_width()) * tile_overlap,
+			grid.tile_height / float(texture.get_height()) * tile_overlap
 		)
 		_tile_root.add_child(sprite)
 		land_tile_count += 1

@@ -53,7 +53,7 @@ run_home_island.bat
 F:\humger\tools\godot\Godot_v4.7.2-stable_win64_console.exe --headless --path F:\humger\HamburgerStory res://home_island/tests/HomeIslandTest.tscn
 ```
 
-当前结果：**61/61**，覆盖地图、移动、动画睁眼、三种采集、枯竭、建造、红绿预览、多格、拆除、搬动回滚、手动存档、新实例重启恢复。
+当前结果：**68/68**，覆盖地图、移动、动画睁眼、三种采集、枯竭、建造、红绿预览、多格、拆除、搬动回滚、手动存档、新实例重启恢复，以及可达性和异常存档防护。
 
 截图：
 

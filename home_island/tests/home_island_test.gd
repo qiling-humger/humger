@@ -78,6 +78,18 @@ func _run_tests() -> void:
 	_check(tree != null and bush != null and rock != null, "树/草丛/石头齐全")
 	_check(game.resource_nodes.size() == 11, "资源节点数量为 11",
 		str(game.resource_nodes.size()))
+	var reachable := _reachable_cells(game.grid.world_to_cell(game.player.position))
+	var all_reachable := true
+	for node in game.resource_nodes:
+		var has_reachable_neighbor := false
+		for d in [Vector2i(0, 1), Vector2i(0, -1), Vector2i(1, 0), Vector2i(-1, 0)]:
+			if reachable.has(node.cell + d):
+				has_reachable_neighbor = true
+				break
+		if not has_reachable_neighbor:
+			all_reachable = false
+			print("  [DETAIL] unreachable resource ", node.node_id, " at ", node.cell)
+	_check(all_reachable, "所有资源至少有一个可达邻格")
 	if tree:
 		_move_next_to(tree)
 		game._refresh_nearest()
@@ -222,6 +234,36 @@ func _run_tests() -> void:
 	restarted.queue_free()
 	await _frames(2)
 
+	print("\n[6c] 存档异常防护")
+	var empty_path := "user://home_island_empty.json"
+	_write_text(empty_path, "")
+	_check(not game.load_game(empty_path), "空存档安全拒绝")
+	var broken_path := "user://home_island_broken.json"
+	_write_text(broken_path, "{ not valid json")
+	_check(not game.load_game(broken_path), "格式错误 JSON 安全拒绝")
+	var wrong_types_path := "user://home_island_wrong_types.json"
+	_write_text(wrong_types_path, JSON.stringify({
+		"version": 1, "map": "home_island_v1", "inventory": {},
+		"resources": [], "objects": "not-an-array", "player": {}
+	}))
+	_check(not game.load_game(wrong_types_path), "错误顶层类型安全拒绝")
+	var weird_path := "user://home_island_weird.json"
+	_write_text(weird_path, JSON.stringify({
+		"version": 1, "map": "home_island_v1", "inventory": {},
+		"resources": [],
+		"objects": [
+			{"id": "unknown_object", "origin": [0, 0]},
+			{"id": "table", "origin": [9999, 9999]}
+		],
+		"player": {"position": [9999, 9999]}
+	}))
+	_check(game.load_game(weird_path), "未知物件/非法坐标存档可安全加载")
+	_check(game.player.can_stand(game.player.position), "非法角色坐标回退到可站立点")
+	_check(game.placed_objects.is_empty(), "未知物件和非法坐标物件被跳过")
+	for p in [empty_path, broken_path, wrong_types_path, weird_path]:
+		if FileAccess.file_exists(p):
+			DirAccess.remove_absolute(ProjectSettings.globalize_path(p))
+
 	print("\n[7] 旧样板测试兼容基础")
 	_check(game.grid.columns == 16 and game.grid.rows == 12,
 		"家园岛使用独立 16×12 配置")
@@ -229,6 +271,28 @@ func _run_tests() -> void:
 		"配置来自 home_island_config.json")
 	_check(game.asset_catalog.get("rabbit", {}).get("animations", {}).has("walk_down"),
 		"复用冻结的兔子动画资源")
+
+
+func _reachable_cells(start: Vector2i) -> Dictionary:
+	var seen := {start: true}
+	var queue: Array[Vector2i] = [start]
+	var head := 0
+	while head < queue.size():
+		var cell := queue[head]
+		head += 1
+		for d in [Vector2i(0, 1), Vector2i(0, -1), Vector2i(1, 0), Vector2i(-1, 0)]:
+			var next: Vector2i = cell + d
+			if seen.has(next) or not game.grid.is_walkable_cell(next):
+				continue
+			seen[next] = true
+			queue.append(next)
+	return seen
+
+
+func _write_text(path: String, text: String) -> void:
+	var f := FileAccess.open(path, FileAccess.WRITE)
+	if f:
+		f.store_string(text)
 
 
 func _resource_by_type(type_id: String) -> VisualSampleResource:
