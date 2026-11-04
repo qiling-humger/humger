@@ -1,0 +1,81 @@
+{
+  "stage": "stage_01_base",
+  "status": "pending_visual_review",
+  "created_at": "2026-11-05T02:10:00+08:00",
+  "generation": {
+    "tool": "dsh-imagegen",
+    "channel": "Volcengine Ark Seedream",
+    "model": "doubao-seedream-5-0-flash-260915",
+    "watermark": false,
+    "postprocess": "HSV magenta chroma key, transparent crop with 16px padding; no geometry art"
+  },
+  "assets": [
+    {
+      "id": "rabbit",
+      "type": "character",
+      "mode": "edit_image with user reference",
+      "task_id": "167ae6a3-0d47-4b02-b249-d5b242d6d12f",
+      "original_ai": "rabbit/original_ai/rabbit_stage01_clean_original.jpg",
+      "transparent_png": "rabbit/transparent_png/rabbit_stage01.png",
+      "size": [668, 960],
+      "purpose": "standard character illustration / visual direction",
+      "prompt": "以参考图中的白兔为唯一角色身份，重新绘制一张正式标准角色立绘。必须是完整的白色动物兔子，不是人类、不是兔耳娘、不穿衣服、不拿道具；保留圆润的脸、大而明亮且完全睁开的眼睛、粉色耳朵和粉色鼻子、温柔可爱的气质。身体比例自然，头略大于身体，四肢短而清晰，有真实兔子结构，不要像穿衣服的小人，不要过度膨胀。2D手绘卡通游戏美术，柔和清晰的深棕色描边，奶油白与浅粉为主，细腻但不过度复杂的明暗层次，不要3D塑料质感。45度等距视角的斜俯视角色，能看到脸、身体和四只脚，不能是纯正面证件照，耳朵和脚完整不裁切。只画单只角色，不要动画帧和九宫格；纯品红背景，完全不要地面阴影、投影或环境阴影，不要文字、边框、场景、水印。"
+    },
+    {
+      "id": "tree",
+      "type": "environment",
+      "mode": "generate_image",
+      "task_id": "88c81784-9ea0-4c68-be05-95e13a0fdcfc",
+      "original_ai": "environment/original_ai/tree_stage01_original.jpg",
+      "transparent_png": "environment/transparent_png/tree_stage01.png",
+      "size": [709, 812],
+      "purpose": "resource node tree",
+      "prompt": "single isolated tree, 2D hand-painted cartoon game asset, 45-degree isometric view, natural layered leaf clusters with varied leaf shapes, visible organic trunk and roots, soft dark-brown ink outline, cream and fresh green palette, gentle upper-left lighting, rich hand-painted shading, no geometric ball clusters, no 3D plastic look, pure solid magenta background, no ground shadow, no ground tile, no text, no other objects, centered full asset"
+    },
+    {
+      "id": "bush",
+      "type": "environment",
+      "mode": "generate_image",
+      "task_id": "4302fb79-1c1b-49f9-bd8a-8e289506c1b4",
+      "original_ai": "environment/original_ai/bush_stage01_original.jpg",
+      "transparent_png": "environment/transparent_png/bush_stage01.png",
+      "size": [957, 876],
+      "purpose": "resource node bush",
+      "prompt": "single isolated bush, 2D hand-painted cartoon game asset, 45-degree isometric view, natural layered leafy shrub with varied leaf shapes and small flowers, organic branches visible, soft dark-brown ink outline, fresh green and cream palette, gentle upper-left lighting, hand-painted shading, no geometric ball assembly, no 3D plastic look, pure solid magenta background, no ground shadow, no ground tile, no text, no other objects, centered full asset"
+    },
+    {
+      "id": "rock",
+      "type": "environment",
+      "mode": "generate_image",
+      "task_id": "6ef0ad0c-b790-4e9a-a11d-56b51941d269",
+      "original_ai": "environment/original_ai/rock_stage01_original.jpg",
+      "transparent_png": "environment/transparent_png/rock_stage01.png",
+      "size": [869, 783],
+      "purpose": "resource node rock",
+      "prompt": "single isolated rock, 2D hand-painted cartoon game asset, 45-degree isometric view, natural irregular boulder with layered cracks and moss patches, organic silhouette, soft dark-brown ink outline, cool gray and warm cream palette, gentle upper-left lighting, hand-painted shading, no geometric primitives, no 3D plastic look, pure solid magenta background, no ground shadow, no ground tile, no text, no other objects, centered full asset"
+    },
+    {
+      "id": "grass",
+      "type": "terrain",
+      "mode": "generate_image",
+      "task_id": "3875a8b4-5870-4706-a54f-5da31387d92d",
+      "original_ai": "environment/original_ai/grass_stage01_original.jpg",
+      "transparent_png": "environment/transparent_png/grass_stage01.png",
+      "size": [1019, 827],
+      "purpose": "grass ground patch",
+      "prompt": "single isometric grass ground tile, 2D hand-painted cartoon game asset, 45-degree isometric view, diamond-shaped patch of natural grass, varied short blades and tiny cream flowers, soft dark-brown ink outline only at the outer edge, warm green palette, gentle upper-left lighting, hand-painted texture and subtle tonal variation, seamless natural surface, no square frame, no geometric grid, no 3D plastic look, pure solid magenta background, no ground shadow, no text, no other objects, centered full tile"
+    }
+  ],
+  "previews": {
+    "assets_transparent": "preview/stage01_assets_transparent.png",
+    "game_staging": "preview/stage01_game.png",
+    "preview_scene": "res://visual_sample/tests/Stage01Preview.tscn"
+  },
+  "notes": {
+    "rabbit_rejected": "A first rabbit render had the Seedream AI-generated watermark; it is kept in rabbit/rejected and is not part of the candidate set.",
+    "grid": "not modified in this stage",
+    "game_logic": "not modified in this stage",
+    "map_scope": "8x8 sample preview only; no full map expansion",
+    "preview_caveat": "The staging preview substitutes the new art over the existing logical sample at runtime and hides the old terrain; it is not a permanent scene integration."
+  }
+}
