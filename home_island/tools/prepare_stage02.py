@@ -65,21 +65,32 @@ def normalize_prop(src: str, dst: str, max_side: int = 900, pad: int = 16) -> No
     out.save(dst)
 
 
+def resolve_input(relative_path: str) -> str:
+    path = os.path.join(STAGE, relative_path)
+    if os.path.exists(path):
+        return path
+    if relative_path.lower().endswith(".png"):
+        jpg = os.path.join(STAGE, relative_path[:-4] + ".jpg")
+        if os.path.exists(jpg):
+            return jpg
+    return ""
+
+
 def main() -> None:
     plan_path = os.path.join(STAGE, "records", "asset_plan.json")
     if not os.path.exists(plan_path):
         raise SystemExit("missing " + plan_path)
     plan = json.load(open(plan_path, encoding="utf-8"))
     for item in plan.get("rabbit_frames", []):
-        src = os.path.join(STAGE, item["input"])
-        if os.path.exists(src):
+        src = resolve_input(item["input"])
+        if src:
             dst = os.path.join(STAGE, item["output"])
             os.makedirs(os.path.dirname(dst), exist_ok=True)
             normalize_frame(src, dst)
             print("frame", os.path.basename(dst))
     for item in plan.get("props", []):
-        src = os.path.join(STAGE, item["input"])
-        if os.path.exists(src):
+        src = resolve_input(item["input"])
+        if src:
             dst = os.path.join(STAGE, item["output"])
             os.makedirs(os.path.dirname(dst), exist_ok=True)
             normalize_prop(src, dst)

@@ -88,9 +88,8 @@ func _run_tests() -> void:
 		_check(game.inventory.get_count("wood") == 6, "木材累计 6",
 			str(game.inventory.get_count("wood")))
 		var visual := tree.get("_sprite") as Sprite2D
-		_check(visual != null and visual.texture != null
-			and str(visual.texture.resource_path).contains("stump"),
-			"树耗尽后切换树桩")
+		_check(visual != null and visual.modulate.a < 0.9,
+			"树耗尽后视觉变淡")
 	if bush:
 		_move_next_to(bush)
 		game._refresh_nearest()

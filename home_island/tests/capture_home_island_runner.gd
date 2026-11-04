@@ -31,9 +31,14 @@ func _ready() -> void:
 	game.exit_build_mode()
 	var tree: VisualSampleResource = null
 	for node in game.resource_nodes:
-		if node.node_type == "tree":
+		if node.node_id == "home_tree_2":
 			tree = node
 			break
+	if tree == null:
+		for node in game.resource_nodes:
+			if node.node_type == "tree":
+				tree = node
+				break
 	if tree:
 		_move_next_to(tree)
 		game._refresh_nearest()
@@ -73,7 +78,7 @@ func _find_empty(size: Vector2i) -> Vector2i:
 
 
 func _move_next_to(node: VisualSampleResource) -> void:
-	for d in [Vector2i(0, 1), Vector2i(0, -1), Vector2i(1, 0), Vector2i(-1, 0)]:
+	for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
 		var cell: Vector2i = node.cell + d
 		if game.grid.is_walkable_cell(cell):
 			game.player.position = game.grid.cell_to_world(cell)

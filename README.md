@@ -78,6 +78,7 @@ $godot = "F:\humger\tools\godot\Godot_v4.7.2-stable_win64_console.exe"
 ## 说明
 
 - 旧热狗店、`map_prototype`、`visual_sample` 已移除，共享实现迁移到 `home_island/core/`。
-- 美术迁移仍在进行：旧 `assets/art_sample` 暂作为过渡素材保留，Stage 01 新素材在 `assets/art_staging/stage_01_base/`；Stage 02 的兔子动画/家具/地形还在制作，完成后会移除过渡素材。
+- 美术已切到 Stage 01/02 素材：兔子动画、家具和地形在 `assets/art_staging/stage_02/`，树/灌木/石头在 `assets/art_staging/stage_01_base/`。
+- 旧 `assets/art_sample` 过渡素材已移除。
 - 本阶段不做餐厅、员工、顾客、完整经济系统或整图扩张。
 - 中文字体使用 Noto Sans SC，许可见 `assets/fonts/OFL.txt`。

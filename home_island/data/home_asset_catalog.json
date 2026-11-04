@@ -12,113 +12,81 @@
     "stone": "#969990"
   },
   "rabbit": {
-    "frame_size": [
-      160,
-      220
-    ],
-    "base_pad": 12,
-    "display_scale": 0.68,
+    "frame_size": [360, 420],
+    "base_pad": 10,
+    "display_scale": 0.46,
     "animations": {
       "idle_down": [
-        "res://assets/art_sample/characters/rabbit_idle_down_00.png",
-        "res://assets/art_sample/characters/rabbit_idle_down_01.png"
+        "res://assets/art_staging/stage_02/rabbit/frames/idle_down.png",
+        "res://assets/art_staging/stage_02/rabbit/frames/blink_down.png"
       ],
       "walk_down": [
-        "res://assets/art_sample/characters/rabbit_walk_down_00.png",
-        "res://assets/art_sample/characters/rabbit_walk_down_01.png",
-        "res://assets/art_sample/characters/rabbit_walk_down_02.png",
-        "res://assets/art_sample/characters/rabbit_walk_down_03.png"
-      ],
-      "idle_up": [
-        "res://assets/art_sample/characters/rabbit_idle_up_00.png",
-        "res://assets/art_sample/characters/rabbit_idle_up_01.png"
-      ],
-      "walk_up": [
-        "res://assets/art_sample/characters/rabbit_walk_up_00.png",
-        "res://assets/art_sample/characters/rabbit_walk_up_01.png",
-        "res://assets/art_sample/characters/rabbit_walk_up_02.png",
-        "res://assets/art_sample/characters/rabbit_walk_up_03.png"
+        "res://assets/art_staging/stage_02/rabbit/frames/walk_down_00.png",
+        "res://assets/art_staging/stage_02/rabbit/frames/walk_down_01.png",
+        "res://assets/art_staging/stage_02/rabbit/frames/walk_down_02.png",
+        "res://assets/art_staging/stage_02/rabbit/frames/walk_down_03.png"
       ],
       "idle_side": [
-        "res://assets/art_sample/characters/rabbit_idle_side_00.png",
-        "res://assets/art_sample/characters/rabbit_idle_side_01.png"
+        "res://assets/art_staging/stage_02/rabbit/frames/idle_side.png",
+        "res://assets/art_staging/stage_02/rabbit/frames/blink_side.png"
       ],
       "walk_side": [
-        "res://assets/art_sample/characters/rabbit_walk_side_00.png",
-        "res://assets/art_sample/characters/rabbit_walk_side_01.png",
-        "res://assets/art_sample/characters/rabbit_walk_side_02.png",
-        "res://assets/art_sample/characters/rabbit_walk_side_03.png"
+        "res://assets/art_staging/stage_02/rabbit/frames/walk_side_00.png",
+        "res://assets/art_staging/stage_02/rabbit/frames/walk_side_01.png",
+        "res://assets/art_staging/stage_02/rabbit/frames/walk_side_02.png",
+        "res://assets/art_staging/stage_02/rabbit/frames/walk_side_03.png"
+      ],
+      "idle_up": [
+        "res://assets/art_staging/stage_02/rabbit/frames/idle_up.png"
+      ],
+      "walk_up": [
+        "res://assets/art_staging/stage_02/rabbit/frames/walk_up_00.png",
+        "res://assets/art_staging/stage_02/rabbit/frames/walk_up_01.png",
+        "res://assets/art_staging/stage_02/rabbit/frames/walk_up_02.png",
+        "res://assets/art_staging/stage_02/rabbit/frames/walk_up_03.png"
       ]
     }
   },
   "props": {
     "tree": {
-      "texture": "res://assets/art_sample/props/tree_01.png",
-      "grid_size": [
-        1,
-        1
-      ],
-      "base_pad": 10,
-      "display_scale": 0.72
+      "texture": "res://assets/art_staging/stage_01_base/environment/transparent_png/tree_stage01.png",
+      "grid_size": [1, 1],
+      "base_pad": 8,
+      "display_scale": 0.32
     },
     "bush": {
-      "texture": "res://assets/art_sample/props/bush_01.png",
-      "grid_size": [
-        1,
-        1
-      ],
-      "base_pad": 10,
-      "display_scale": 0.72
+      "texture": "res://assets/art_staging/stage_01_base/environment/transparent_png/bush_stage01.png",
+      "grid_size": [1, 1],
+      "base_pad": 8,
+      "display_scale": 0.15
     },
     "rock": {
-      "texture": "res://assets/art_sample/props/rock_01.png",
-      "grid_size": [
-        1,
-        1
-      ],
+      "texture": "res://assets/art_staging/stage_01_base/environment/transparent_png/rock_stage01.png",
+      "grid_size": [1, 1],
       "base_pad": 8,
-      "display_scale": 0.74
+      "display_scale": 0.14
     },
     "crate": {
-      "texture": "res://assets/art_sample/furniture/crate_01.png",
-      "grid_size": [
-        1,
-        1
-      ],
-      "base_pad": 12,
-      "display_scale": 0.68
+      "texture": "res://assets/art_staging/stage_02/furniture/transparent_png/crate.png",
+      "grid_size": [1, 1],
+      "base_pad": 8,
+      "display_scale": 0.16
     },
     "table": {
-      "texture": "res://assets/art_sample/furniture/table_2x1.png",
-      "grid_size": [
-        2,
-        1
-      ],
-      "base_pad": 11,
-      "display_scale": 0.72
+      "texture": "res://assets/art_staging/stage_02/furniture/transparent_png/table.png",
+      "grid_size": [2, 1],
+      "base_pad": 8,
+      "display_scale": 0.20
     },
     "chair": {
-      "texture": "res://assets/art_sample/furniture/chair_01.png",
-      "grid_size": [
-        1,
-        1
-      ],
-      "base_pad": 12,
-      "display_scale": 0.72
-    },
-    "stump": {
-      "texture": "res://assets/art_sample/props/stump_01.png",
-      "grid_size": [
-        1,
-        1
-      ],
-      "base_pad": 7,
-      "display_scale": 0.72
+      "texture": "res://assets/art_staging/stage_02/furniture/transparent_png/chair.png",
+      "grid_size": [1, 1],
+      "base_pad": 8,
+      "display_scale": 0.16
     }
   },
   "terrain": {
-    "grass": "res://assets/art_sample/terrain/grass_01.png",
-    "sand": "res://assets/art_sample/terrain/sand_01.png",
-    "water": "res://assets/art_sample/terrain/water_01.png"
+    "grass": "res://assets/art_staging/stage_02/terrain/transparent_png/grass_tile.png",
+    "sand": "res://assets/art_staging/stage_02/terrain/transparent_png/sand_tile.png"
   }
 }
