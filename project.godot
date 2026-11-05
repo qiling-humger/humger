@@ -1,4 +1,4 @@
-; Engine configuration file.
+﻿; Engine configuration file.
 ; It's best edited using the editor UI and not directly,
 ; since the parameters that go here are not all obvious.
 ;
@@ -12,7 +12,7 @@ config_version=5
 
 config/name="汉堡物语"
 config/description="一个 45 度斜俯视的卡通家园岛经营游戏。"
-run/main_scene="res://home_island/HomeIsland.tscn"
+run/main_scene="res://tutorial/TutorialLevel.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 

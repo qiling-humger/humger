@@ -1,32 +1,308 @@
 {
-  "map": {"columns": 16, "rows": 12, "tile_width": 96, "tile_height": 48},
-  "island": {
-    "center": [7.5, 5.5],
-    "radius": [6.6, 4.6],
-    "sand_threshold": 1.0,
-    "clearing_center": [99, 99],
-    "clearing_radius": [0.01, 0.01]
+  "map": {
+    "columns": 24,
+    "rows": 20,
+    "tile_width": 96,
+    "tile_height": 48,
+    "terrain_rows": [
+      "海海海海海海海海海海海海海海海海海海海海海海海海",
+      "海海海海海海沙沙沙沙沙沙沙沙沙沙海海海海海海海海",
+      "海海海海海沙沙沙草草草草草草沙沙沙海海海海海海海",
+      "海海海海沙沙树树草草草草草草草石草草沙沙海海海海",
+      "海海海沙沙树草树草草花草草草草草石草草沙沙海海海",
+      "海海沙树草草树草草草花草草草草石草草石草沙沙海海",
+      "海海沙草树草树草草花草草草草草草草石草草草沙海海",
+      "海沙沙草草树草草草草草草草草草草石草草草草沙沙海",
+      "海沙草花草草草草草草兔兔草草草草草草草花草草沙海",
+      "海沙草草花草草草草草兔兔路草草草草草花草草草沙海",
+      "海沙草草草草草草草草草草路店店草草草草草草草沙海",
+      "海沙草草草草草草草草草草路店店草草草草草草草沙海",
+      "海沙沙草花草草草草草草草路店店草草草草草草沙沙海",
+      "海海沙草草花草树草草草草路路路草草草花草草沙海海",
+      "海海沙沙草草树草花草石草草草路花草草草草沙沙海海",
+      "海海海沙沙草草树草草石草草草路草草草草沙沙海海海",
+      "海海海海沙沙草草树草草石草草码码草草沙沙海海海海",
+      "海海海海海海沙沙沙草草草草草码码沙沙海海海海海海",
+      "海海海海海海海海沙沙沙沙沙沙沙沙海海海海海海海海",
+      "海海海海海海海海海海海海海海海海海海海海海海海海"
+    ]
   },
-  "player": {"spawn": [7, 9], "speed": 190.0, "interaction_radius": 100.0},
-  "resource_order": ["wood", "stone", "grass"],
+  "island": {
+    "center": [
+      11.5,
+      9.5
+    ],
+    "radius": [
+      10.3,
+      8.2
+    ],
+    "sand_threshold": 0.68,
+    "clearing_center": [
+      7.5,
+      6.5
+    ],
+    "clearing_radius": [
+      2.2,
+      1.5
+    ]
+  },
+  "player": {
+    "spawn": [
+      12,
+      9
+    ],
+    "speed": 190.0,
+    "interaction_radius": 100.0
+  },
+  "resource_order": [
+    "wood",
+    "stone",
+    "grass"
+  ],
   "resource_types": {
-    "wood": {"name": "木材", "color": "#9A613D", "icon": "log"},
-    "stone": {"name": "石头", "color": "#838681", "icon": "stone"},
-    "grass": {"name": "草", "color": "#689D50", "icon": "grass"}
+    "wood": {
+      "name": "木材",
+      "color": "#9A613D",
+      "icon": "log"
+    },
+    "grass": {
+      "name": "草",
+      "color": "#689D50",
+      "icon": "grass"
+    },
+    "stone": {
+      "name": "石头",
+      "color": "#838681",
+      "icon": "stone"
+    }
   },
   "node_types": {
-    "tree": {"name": "树", "resource": "wood", "amount": 2, "uses": 3, "blocking": true, "verb": "摇树"},
-    "rock": {"name": "石头", "resource": "stone", "amount": 2, "uses": 3, "blocking": true, "verb": "敲石头"},
-    "bush": {"name": "草丛", "resource": "grass", "amount": 2, "uses": 2, "blocking": false, "verb": "割草"}
+    "tree": {
+      "name": "小树",
+      "resource": "wood",
+      "amount": 2,
+      "uses": 3,
+      "blocking": true,
+      "verb": "摇树"
+    },
+    "bush": {
+      "name": "草丛",
+      "resource": "grass",
+      "amount": 2,
+      "uses": 2,
+      "blocking": false,
+      "verb": "割草"
+    },
+    "rock": {
+      "name": "石块",
+      "resource": "stone",
+      "amount": 1,
+      "uses": 3,
+      "blocking": true,
+      "verb": "敲石头"
+    }
   },
   "resource_nodes": [
-    {"id": "t_tree_1", "type": "tree", "cell": [2, 4]},
-    {"id": "t_tree_2", "type": "tree", "cell": [4, 6]},
-    {"id": "t_tree_3", "type": "tree", "cell": [3, 8]},
-    {"id": "t_rock_1", "type": "rock", "cell": [2, 7]},
-    {"id": "t_rock_2", "type": "rock", "cell": [5, 4]},
-    {"id": "t_bush_1", "type": "bush", "cell": [5, 8]},
-    {"id": "t_bush_2", "type": "bush", "cell": [4, 9]}
+    {
+      "id": "home_tree_1",
+      "type": "tree",
+      "cell": [
+        6,
+        3
+      ]
+    },
+    {
+      "id": "home_tree_2",
+      "type": "tree",
+      "cell": [
+        7,
+        3
+      ]
+    },
+    {
+      "id": "home_rock_1",
+      "type": "rock",
+      "cell": [
+        15,
+        3
+      ]
+    },
+    {
+      "id": "home_tree_3",
+      "type": "tree",
+      "cell": [
+        5,
+        4
+      ]
+    },
+    {
+      "id": "home_tree_4",
+      "type": "tree",
+      "cell": [
+        7,
+        4
+      ]
+    },
+    {
+      "id": "home_rock_2",
+      "type": "rock",
+      "cell": [
+        16,
+        4
+      ]
+    },
+    {
+      "id": "home_tree_5",
+      "type": "tree",
+      "cell": [
+        3,
+        5
+      ]
+    },
+    {
+      "id": "home_tree_6",
+      "type": "tree",
+      "cell": [
+        6,
+        5
+      ]
+    },
+    {
+      "id": "home_rock_3",
+      "type": "rock",
+      "cell": [
+        15,
+        5
+      ]
+    },
+    {
+      "id": "home_rock_4",
+      "type": "rock",
+      "cell": [
+        18,
+        5
+      ]
+    },
+    {
+      "id": "home_tree_7",
+      "type": "tree",
+      "cell": [
+        4,
+        6
+      ]
+    },
+    {
+      "id": "home_tree_8",
+      "type": "tree",
+      "cell": [
+        6,
+        6
+      ]
+    },
+    {
+      "id": "home_rock_5",
+      "type": "rock",
+      "cell": [
+        17,
+        6
+      ]
+    },
+    {
+      "id": "home_tree_9",
+      "type": "tree",
+      "cell": [
+        5,
+        7
+      ]
+    },
+    {
+      "id": "home_rock_6",
+      "type": "rock",
+      "cell": [
+        16,
+        7
+      ]
+    },
+    {
+      "id": "home_tree_10",
+      "type": "tree",
+      "cell": [
+        7,
+        13
+      ]
+    },
+    {
+      "id": "home_tree_11",
+      "type": "tree",
+      "cell": [
+        6,
+        14
+      ]
+    },
+    {
+      "id": "home_rock_7",
+      "type": "rock",
+      "cell": [
+        10,
+        14
+      ]
+    },
+    {
+      "id": "home_tree_12",
+      "type": "tree",
+      "cell": [
+        7,
+        15
+      ]
+    },
+    {
+      "id": "home_rock_8",
+      "type": "rock",
+      "cell": [
+        10,
+        15
+      ]
+    },
+    {
+      "id": "home_tree_13",
+      "type": "tree",
+      "cell": [
+        8,
+        16
+      ]
+    },
+    {
+      "id": "home_rock_9",
+      "type": "rock",
+      "cell": [
+        11,
+        16
+      ]
+    },
+    {
+      "id": "home_bush_1",
+      "type": "bush",
+      "cell": [
+        10,
+        4
+      ]
+    },
+    {
+      "id": "home_bush_2",
+      "type": "bush",
+      "cell": [
+        3,
+        8
+      ]
+    },
+    {
+      "id": "home_bush_3",
+      "type": "bush",
+      "cell": [
+        18,
+        9
+      ]
+    }
   ],
   "placeables": [
     {
@@ -39,7 +315,11 @@
       "anchor": "bottom_center",
       "color": "#D98B61",
       "description": "3×2 · 8木 4石 2草",
-      "build_cost": {"wood": 8, "stone": 4, "grass": 2}
+      "build_cost": {
+        "wood": 8,
+        "stone": 4,
+        "grass": 2
+      }
     },
     {
       "id": "boat",
@@ -51,7 +331,11 @@
       "anchor": "bottom_center",
       "color": "#4E93B0",
       "description": "3×2 · 20木 8石 6草",
-      "build_cost": {"wood": 20, "stone": 8, "grass": 6}
+      "build_cost": {
+        "wood": 20,
+        "stone": 8,
+        "grass": 6
+      }
     }
   ],
   "initial_objects": []

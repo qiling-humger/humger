@@ -10,8 +10,8 @@ extends Node2D
 @onready var placement: VisualSamplePlacement = $Placement
 @onready var ui: VisualSampleUI = $UI/HUD
 
-@export var config_path := "res://home_island/data/home_island_config.json"
-@export var asset_catalog_path := "res://home_island/data/home_asset_catalog.json"
+@export var config_path := "res://tutorial/data/tutorial_config.json"
+@export var asset_catalog_path := "res://tutorial/data/tutorial_asset_catalog.json"
 
 var config: Dictionary = {}
 var asset_catalog: Dictionary = {}

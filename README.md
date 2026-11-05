@@ -1,84 +1,88 @@
-# 汉堡物语 · 家园岛可玩原型 V1
+# 汉堡物语 · 初始岛 V2 新手关
 
-使用 **Godot 4.7.2** 的 45° 斜俯视 2D 卡通家园岛原型。
+Godot 4.7.2 的 45° 斜俯视 2D 卡通初始岛。主场景已经切到 **Simple Cartoon V2 素材 + 24×20 新手关**，V1 的美术资源和 V1 HomeIsland 场景/测试已移除。
 
-当前项目位置：`F:\humger\HamburgerStory`
-根目录快捷启动：`F:\humger\启动家园岛V1.bat`
+项目位置：`F:\humger\HamburgerStory`
 
 ## 启动
 
 双击：
 
 ```text
-F:\humger\启动家园岛V1.bat
+F:\humger\启动初始岛.bat
 ```
 
-或项目内：
+或：
 
 ```text
-run_home_island.bat
+F:\humger\启动新手关.bat
 ```
 
-也可以打开 `project.godot` 后按 F5；主场景已指向 `home_island/HomeIsland.tscn`。
+也可以打开 `project.godot` 后按 F5；主场景是：
+
+```text
+res://tutorial/TutorialLevel.tscn
+```
 
 ## 操作
 
 | 操作 | 按键 |
 |---|---|
 | 移动 | `WASD` / 方向键 |
-| 采集最近资源 | `E` |
+| 采集 / 对话 / 做菜 / 交付 / 睡觉 | `E` |
 | 建造 / 退出 | `B` / `Esc` |
 | 选择建造物件 | `1`–`3` |
 | 放置 | 建造模式下鼠标左键 |
-| 搬动物件 | 非建造模式下拖动已放置物件 |
-| 拆除 | 鼠标右键点击物件 |
 | 保存 / 读取 | `F5` / `F9` |
+| 提示 | `H` |
 
 ## 当前内容
 
-- 24×20 初始海岛，按参考布局包含水域、沙滩、草地、道路、花草与地标
-- 兔子四向移动；待机/行走动画
-- 树采木材、草丛采草、石头采石材
-- 资源耗尽状态
-- 1×1 / 2×1 网格建造、搬动、取消、右键拆除
-- 水面/重叠/边界禁止放置，绿色/红色预览
-- 自动保存与启动恢复：角色位置、库存、资源剩余次数、物件位置
+- 24×20 初始岛，V2 草地、树木、石头、兔子素材
+- 参考布局的水域、沙滩、草地、道路、花草、兔屋/餐厅/码头区域
+- 五天新手关：采集 → 建餐厅 → 蛇商 → 做菜/交付 → 兔子/猫猫顾客 → 员工送餐 → 大胡萝卜 → 造船启航
+- 网格建造、搬动、旋转、拆除、绿红预览
+- 自动保存/启动恢复
 
 ## 目录
 
 ```text
-home_island/
-├─ HomeIsland.tscn
-├─ data/
-│  ├─ home_island_config.json
-│  └─ home_asset_catalog.json
-├─ scripts/
-│  ├─ home_island_game.gd
-│  ├─ home_island_rabbit.gd
-│  ├─ home_island_placement.gd
-│  └─ home_island_ui.gd
-├─ core/                 # 共享网格、兔子、放置、地形、UI 基础
-├─ tests/
-│  ├─ HomeIslandTest.tscn
-│  ├─ home_island_test.gd
-│  ├─ HomeIslandCapture.tscn
-│  └─ capture_home_island_runner.gd
+tutorial/
+├─ TutorialLevel.tscn        # 主场景
+├─ data/                     # 24×20 V2 地图、资源、建筑定义
+├─ scripts/                  # tutorial_game / actor / hud
+├─ tests/                    # 逻辑测试与截图
+├─ assets/placeholder/       # 餐厅/小船/草丛占位
 └─ screenshots/
+
+home_island/
+├─ core/                     # 共享网格、地形、放置、库存、锚点
+├─ scripts/                  # 共享游戏/兔子/放置控制器
+└─ README.md                 # 共享核心说明
 ```
 
 ## 测试
 
 ```powershell
 $godot = "F:\humger\tools\godot\Godot_v4.7.2-stable_win64_console.exe"
-& $godot --headless --path F:\humger\HamburgerStory res://home_island/tests/HomeIslandTest.tscn
+
+# 新手关逻辑（含 24×20 地图布局）
+& $godot --headless --path F:\humger\HamburgerStory `
+  res://tutorial/tests/TutorialLogicTest.tscn
+
+# V2 风格测试场景
+& $godot --headless --path F:\humger\HamburgerStory `
+  res://home_island_v2_test/tests/V2StyleTest.tscn
 ```
 
-当前结果：**61 / 61**。
+当前结果：
+
+- 新手关逻辑：**28 / 28**
+- V2 风格测试：**19 / 19**
 
 ## 说明
 
-- 旧热狗店、`map_prototype`、`visual_sample` 已移除，共享实现迁移到 `home_island/core/`。
-- 美术已切到 Stage 01/02 素材：兔子动画、家具和地形在 `assets/art_staging/stage_02/`，树/灌木/石头在 `assets/art_staging/stage_01_base/`。
-- 旧 `assets/art_sample` 过渡素材已移除。
-- 本阶段不做餐厅、员工、顾客、完整经济系统或整图扩张。
+- V1 的 `assets/art_staging`、V1 HomeIsland 场景、配置、测试和截图已删除。
+- 当前只使用 `assets/art_style_v2_test/` 的 V2 素材和 `tutorial/assets/placeholder/` 占位。
+- 餐厅/顾客/员工/小船是教学关占位表现，不改变 V2 美术风格。
 - 中文字体使用 Noto Sans SC，许可见 `assets/fonts/OFL.txt`。

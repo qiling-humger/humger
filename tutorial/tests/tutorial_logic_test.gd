@@ -26,6 +26,20 @@ func _ready() -> void:
 
 
 func _run() -> void:
+	_check(game.grid.columns == 24 and game.grid.rows == 20, "初始岛为 24×20")
+	_check(game.resource_nodes.size() == 25, "初始岛资源节点数量 25")
+	var sand := 0
+	var road := 0
+	var flower := 0
+	for cell in game.grid.get_land_cells():
+		match game.grid.terrain_at(cell):
+			IslandGrid.SAND:
+				sand += 1
+			IslandGrid.ROAD:
+				road += 1
+			IslandGrid.FLOWER:
+				flower += 1
+	_check(sand == 72 and road == 9 and flower == 12, "沙滩/道路/花草分布符合参考图")
 	_check(game.day == 1, "新手关从第 1 天开始")
 	_check(game.objective_text.contains("蛇商"), "第 1 天先引导找蛇商")
 	game.inventory.add("wood", 30)
@@ -37,8 +51,9 @@ func _run() -> void:
 	game.shop_open = false
 
 	var restaurant_def: Dictionary = game.find_def("restaurant")
+	var restaurant_origin := _find_empty(Vector2i(3, 2))
 	var restaurant: VisualSamplePlaceable = game.spawn_placeable(
-		restaurant_def, Vector2i(7, 4), 0)
+		restaurant_def, restaurant_origin, 0)
 	_check(restaurant != null, "餐厅建成")
 	_check(game.restaurant_built and game.customer_actor != null, "餐厅开业后顾客出现")
 	_check(game.inventory.get_count("wood") == 22, "餐厅扣除木材")

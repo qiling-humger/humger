@@ -34,7 +34,7 @@ func _ready() -> void:
 	game.ui.queue_redraw()
 	game.toggle_build_mode()
 	game.select_buildable(0)
-	var center := game.grid.world_from_float(Vector2(8, 4.5))
+	var center := game.grid.world_from_float(Vector2(8, 10.5))
 	game.set_process(false)
 	game.placement.update_preview(center)
 	game.placement._process(0.0)

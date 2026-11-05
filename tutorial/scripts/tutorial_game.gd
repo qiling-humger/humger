@@ -5,7 +5,7 @@ extends HomeIslandGame
 
 const STATE_PATH := "user://tutorial_state.json"
 const MUD_CELL := Vector2i(4, 10)
-const WATER_CELL := Vector2i(14, 10)
+const WATER_CELL := Vector2i(15, 18)
 
 var state_path := STATE_PATH
 
@@ -83,10 +83,10 @@ func _process(delta: float) -> void:
 
 func _setup_markers() -> void:
 	snake_actor = _make_actor("snake", "蛇商人", Color(0.45, 0.70, 0.44),
-		grid.cell_to_world(Vector2i(12, 5)))
+		grid.cell_to_world(Vector2i(18, 6)))
 	snake_actor.scale = Vector2(1.2, 1.2)
 	burrow_actor = _make_actor("burrow", "兔窝", Color(0.72, 0.54, 0.34),
-		grid.cell_to_world(Vector2i(7, 9)))
+		grid.cell_to_world(Vector2i(10, 8)))
 
 
 func _make_actor(kind: String, label: String, color: Color, pos: Vector2) -> TutorialActor:

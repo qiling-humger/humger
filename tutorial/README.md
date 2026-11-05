@@ -1,6 +1,6 @@
-# 汉堡物语 · 五天新手关（第一版）
+# 汉堡物语 · 初始岛 V2 · 五天新手关
 
-独立教学关，不覆盖正式 `home_island`。入口：
+当前主初始岛，使用 V2 素材和参考布局的 24×20 地图。入口：
 
 ```text
 res://tutorial/TutorialLevel.tscn
@@ -9,7 +9,7 @@ res://tutorial/TutorialLevel.tscn
 本地双击：
 
 ```text
-F:\humger\启动新手关.bat
+F:\humger\启动初始岛.bat
 ```
 
 ## 操作
@@ -45,5 +45,5 @@ F:\humger\启动新手关.bat
 
 测试：
 
-- Tutorial Logic：`25/25`
-- 正式家园岛：`90/90`
+- Tutorial Logic：`28/28`（含 24×20 地图布局检查）
+- V2 风格测试：`19/19`
