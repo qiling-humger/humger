@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://home_island/tests/map24_capture.gd" id="1"]
+
+[node name="Map24Capture" type="Node"]
+script = ExtResource("1")

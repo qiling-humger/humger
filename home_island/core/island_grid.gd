@@ -7,6 +7,8 @@ const WATER := 0
 const GRASS := 1
 const SAND := 2
 const DIRT := 3
+const ROAD := 4
+const FLOWER := 5
 
 var columns := 24
 var rows := 18
@@ -20,6 +22,7 @@ var clearing_radius := Vector2(3.4, 2.5)
 
 var land_cells: Dictionary = {}
 var world_offset := Vector2.ZERO
+var _explicit_terrain_rows: Array = []
 
 var _occupancy: Dictionary = {}
 var _object_cells: Dictionary = {}
@@ -32,6 +35,7 @@ func setup(config: Dictionary) -> void:
 	rows = int(map_data.get("rows", 18))
 	tile_width = float(map_data.get("tile_width", 64))
 	tile_height = float(map_data.get("tile_height", 32))
+	_explicit_terrain_rows = map_data.get("terrain_rows", [])
 
 	var island_data: Dictionary = config.get("island", {})
 	var center_value: Array = island_data.get("center", [11.5, 8.5])
@@ -54,6 +58,14 @@ func setup(config: Dictionary) -> void:
 
 func generate_island() -> void:
 	land_cells.clear()
+	if not _explicit_terrain_rows.is_empty():
+		for y in range(mini(rows, _explicit_terrain_rows.size())):
+			var row := str(_explicit_terrain_rows[y])
+			for x in range(mini(columns, row.length())):
+				var terrain := _terrain_for_char(row.substr(x, 1))
+				if terrain >= 0:
+					land_cells[Vector2i(x, y)] = terrain
+		return
 	for y in range(rows):
 		for x in range(columns):
 			var cell := Vector2i(x, y)
@@ -70,6 +82,22 @@ func generate_island() -> void:
 			if cx * cx + cy * cy <= 1.0 and terrain != SAND:
 				terrain = DIRT
 			land_cells[cell] = terrain
+
+
+func _terrain_for_char(ch: String) -> int:
+	match ch:
+		"海", "H":
+			return -1
+		"沙", "S":
+			return SAND
+		"路", "P":
+			return ROAD
+		"花", "F":
+			return FLOWER
+		"草", "G", "树", "T", "石", "K", "兔", "B", "店", "R", "码", "D":
+			return GRASS
+		_:
+			return -1
 
 
 func in_bounds(cell: Vector2i) -> bool:
@@ -96,6 +124,10 @@ func terrain_name(cell: Vector2i) -> String:
 			return "sand"
 		DIRT:
 			return "dirt"
+		ROAD:
+			return "road"
+		FLOWER:
+			return "flower"
 		_:
 			return "water"
 

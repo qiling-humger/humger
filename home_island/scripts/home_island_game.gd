@@ -15,6 +15,7 @@ func _ready() -> void:
 	player.camera.zoom = Vector2(1.15, 1.15)
 	player.camera.position = Vector2(0, -28)
 	player.camera.reset_smoothing()
+	_build_landmarks()
 	if persistence_enabled and FileAccess.file_exists(save_path):
 		if not load_game(save_path):
 			_seed_default_objects()
@@ -22,6 +23,28 @@ func _ready() -> void:
 		_seed_default_objects()
 	ui.add_toast("F5 保存 · F9 读取 · 右键拆除已放置物件。", Painter.BROWN)
 	get_tree().auto_accept_quit = false
+
+
+func _build_landmarks() -> void:
+	var entries: Array = config.get("landmarks", [])
+	if entries.is_empty():
+		return
+	var root := Node2D.new()
+	root.name = "MapLandmarks"
+	add_child(root)
+	for entry_value in entries:
+		if typeof(entry_value) != TYPE_DICTIONARY:
+			continue
+		var entry: Dictionary = entry_value
+		var landmark: IslandLandmark = IslandLandmark.new()
+		landmark.setup(grid, entry)
+		root.add_child(landmark)
+		var origin_value: Array = entry.get("origin", [0, 0])
+		var size_value: Array = entry.get("size", [1, 1])
+		var origin := Vector2i(int(origin_value[0]), int(origin_value[1]))
+		var size := Vector2i(int(size_value[0]), int(size_value[1]))
+		var cells := grid.footprint_cells(origin, size)
+		grid.reserve(cells, "landmark_" + str(entry.get("id", "x")), true)
 
 
 func _welcome_toast_text() -> String:

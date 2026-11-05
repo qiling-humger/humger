@@ -41,8 +41,8 @@ run_home_island.bat
 
 ## 地图与资源
 
-- 16×12 小型海岛，边缘水域 + 沙滩
-- 4 棵树、4 丛草、3 块石头
+- 24×20 初始海岛，按参考布局包含水域、沙滩、草地、道路、花草、兔屋/餐厅/码头地标
+- 13 棵树、3 丛草、9 块石头；地标区域占用网格
 - 普通状态隐藏网格；建造模式显示网格
 - 1×1 木箱/椅子，2×1 桌子
 - 树/草/石头耗尽后视觉变淡、缩小并残留
@@ -53,10 +53,11 @@ run_home_island.bat
 F:\humger\tools\godot\Godot_v4.7.2-stable_win64_console.exe --headless --path F:\humger\HamburgerStory res://home_island/tests/HomeIslandTest.tscn
 ```
 
-当前结果：**87/87**，覆盖地图、移动、动画睁眼、三种采集、枯竭、建造、红绿预览、多格、拆除、搬动回滚、手动存档、新实例重启恢复、可达性、异常存档防护，以及旋转、旋转占格/碰撞和旋转存档恢复。
+当前结果：**90/90**，覆盖 24×20 地图、地形分布、移动、动画睁眼、三种采集、枯竭、建造、红绿预览、多格、拆除、搬动回滚、手动存档、新实例重启恢复、可达性、异常存档防护，以及旋转、旋转占格/碰撞和旋转存档恢复。
 
 截图：
 
+- `screenshots/map_24x20.png`
 - `screenshots/01_home_stage02.png`
 - `screenshots/02_build_stage02.png`
 - `screenshots/03_gather_stage02.png`
@@ -64,4 +65,4 @@ F:\humger\tools\godot\Godot_v4.7.2-stable_win64_console.exe --headless --path F:
 ## 本阶段不做
 
 - 餐厅、员工、顾客、完整经济系统
-- 整张大地图扩展
+- 对兔屋/餐厅/码头地标做正式建筑与交互（当前只表达布局和占用）

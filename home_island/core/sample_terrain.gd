@@ -15,6 +15,7 @@ var _tile_root: Node2D
 var _coast_overlay: VisualSampleOverlay
 var _grid_overlay: VisualSampleOverlay
 var land_tile_count := 0
+var flower_cells: Array[Vector2i] = []
 
 
 func setup(game_ref: Node, grid_ref: IslandGrid, asset_catalog: Dictionary) -> void:
@@ -52,8 +53,9 @@ func _build_base() -> void:
 	for cell in grid.get_land_cells():
 		var polygon := Polygon2D.new()
 		polygon.polygon = grid.get_diamond(cell, -2.0)
-		polygon.color = grass_base_color if grid.terrain_at(cell) != IslandGrid.SAND \
-			else sand_base_color
+		var terrain := grid.terrain_at(cell)
+		polygon.color = sand_base_color if terrain == IslandGrid.SAND \
+			or terrain == IslandGrid.ROAD else grass_base_color
 		_base_root.add_child(polygon)
 
 
@@ -62,11 +64,14 @@ func _build_tiles() -> void:
 	var grass_tex := load(str(terrain_paths.get("grass", ""))) as Texture2D
 	var sand_tex := load(str(terrain_paths.get("sand", ""))) as Texture2D
 	land_tile_count = 0
+	flower_cells.clear()
 	for cell in grid.get_land_cells():
 		var terrain := grid.terrain_at(cell)
 		var texture: Texture2D = grass_tex
-		if terrain == IslandGrid.SAND and sand_tex != null:
+		if (terrain == IslandGrid.SAND or terrain == IslandGrid.ROAD) and sand_tex != null:
 			texture = sand_tex
+		if terrain == IslandGrid.FLOWER:
+			flower_cells.append(cell)
 		if texture == null:
 			continue
 		var sprite := Sprite2D.new()
@@ -81,6 +86,18 @@ func _build_tiles() -> void:
 		)
 		_tile_root.add_child(sprite)
 		land_tile_count += 1
+	queue_redraw()
+
+
+func _draw() -> void:
+	if grid == null:
+		return
+	# Flowers are simple existing-palette marks, not new material art.
+	for cell in flower_cells:
+		var c := grid.cell_to_world(cell)
+		draw_circle(c + Vector2(-11, 3), 2.2, Color(1.0, 0.94, 0.62, 0.95))
+		draw_circle(c + Vector2(10, -2), 1.8, Color(0.98, 0.84, 0.48, 0.9))
+		draw_circle(c + Vector2(0, 7), 1.6, Color(0.91, 0.53, 0.48, 0.9))
 
 
 func set_build_mode(value: bool) -> void:

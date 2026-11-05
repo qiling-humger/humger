@@ -27,16 +27,28 @@ func _ready() -> void:
 func _run_tests() -> void:
 	print("\n[1] 地图 / 水域 / 沙滩 / 隐藏网格")
 	_check(game != null, "HomeIsland 实例化成功")
-	_check(game.grid.columns == 16 and game.grid.rows == 12, "网格为 16×12",
+	_check(game.grid.columns == 24 and game.grid.rows == 20, "网格为 24×20",
 		"%d×%d" % [game.grid.columns, game.grid.rows])
 	_check(game.grid.get_land_count() >= 90, "海岛陆地数量足够",
 		str(game.grid.get_land_count()))
 	_check(game.grid.is_water(Vector2i(0, 0)), "地图角落是水域")
 	var sand_count := 0
+	var road_count := 0
+	var flower_count := 0
 	for cell in game.grid.get_land_cells():
-		if game.grid.terrain_at(cell) == IslandGrid.SAND:
-			sand_count += 1
-	_check(sand_count >= 12, "地图边缘有沙滩", str(sand_count))
+		match game.grid.terrain_at(cell):
+			IslandGrid.SAND:
+				sand_count += 1
+			IslandGrid.ROAD:
+				road_count += 1
+			IslandGrid.FLOWER:
+				flower_count += 1
+	_check(sand_count == 72, "沙滩分布符合参考图", str(sand_count))
+	_check(road_count == 9, "道路分布符合参考图", str(road_count))
+	_check(flower_count == 12, "花草分布符合参考图", str(flower_count))
+	var landmarks := game.get_node_or_null("MapLandmarks")
+	_check(landmarks != null and landmarks.get_child_count() == 3,
+		"兔屋/餐厅/码头三个地标存在")
 	_check(game.terrain.land_tile_count == game.grid.get_land_count(),
 		"每块陆地都有独立地形 Sprite", str(game.terrain.land_tile_count))
 	_check(not game.terrain.is_grid_visible(), "普通状态网格隐藏")
@@ -76,7 +88,7 @@ func _run_tests() -> void:
 	var bush: VisualSampleResource = _resource_by_type("bush")
 	var rock: VisualSampleResource = _resource_by_type("rock")
 	_check(tree != null and bush != null and rock != null, "树/草丛/石头齐全")
-	_check(game.resource_nodes.size() == 11, "资源节点数量为 11",
+	_check(game.resource_nodes.size() == 25, "资源节点数量为 25",
 		str(game.resource_nodes.size()))
 	var reachable := _reachable_cells(game.grid.world_to_cell(game.player.position))
 	var all_reachable := true
@@ -233,7 +245,7 @@ func _run_tests() -> void:
 		_check(crate.origin == move_target, "非法搬动回滚", str(crate.origin))
 
 	print("\n[6] 存档 / 重启恢复")
-	var saved_player_cell := Vector2i(4, 6)
+	var saved_player_cell := Vector2i(12, 9)
 	game.player.position = game.grid.cell_to_world(saved_player_cell)
 	var saved_wood := game.inventory.get_count("wood")
 	var saved_grass := game.inventory.get_count("grass")
@@ -335,9 +347,9 @@ func _run_tests() -> void:
 			DirAccess.remove_absolute(ProjectSettings.globalize_path(p))
 
 	print("\n[7] 旧样板测试兼容基础")
-	_check(game.grid.columns == 16 and game.grid.rows == 12,
-		"家园岛使用独立 16×12 配置")
-	_check(game.config.get("map", {}).get("columns", 0) == 16,
+	_check(game.grid.columns == 24 and game.grid.rows == 20,
+		"家园岛使用独立 24×20 配置")
+	_check(game.config.get("map", {}).get("columns", 0) == 24,
 		"配置来自 home_island_config.json")
 	_check(game.asset_catalog.get("rabbit", {}).get("animations", {}).has("walk_down"),
 		"复用冻结的兔子动画资源")
