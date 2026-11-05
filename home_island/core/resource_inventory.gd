@@ -28,6 +28,17 @@ func get_count(resource_id: String) -> int:
 	return int(counts.get(resource_id, 0))
 
 
+func remove(resource_id: String, amount: int) -> bool:
+	if amount <= 0:
+		return false
+	var current := get_count(resource_id)
+	if current < amount:
+		return false
+	counts[resource_id] = current - amount
+	changed.emit(resource_id, -amount, counts.duplicate())
+	return true
+
+
 func snapshot() -> Dictionary:
 	return counts.duplicate()
 

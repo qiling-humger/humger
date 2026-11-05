@@ -1,0 +1,58 @@
+{
+  "map": {"columns": 16, "rows": 12, "tile_width": 96, "tile_height": 48},
+  "island": {
+    "center": [7.5, 5.5],
+    "radius": [6.6, 4.6],
+    "sand_threshold": 1.0,
+    "clearing_center": [99, 99],
+    "clearing_radius": [0.01, 0.01]
+  },
+  "player": {"spawn": [7, 9], "speed": 190.0, "interaction_radius": 100.0},
+  "resource_order": ["wood", "stone", "grass"],
+  "resource_types": {
+    "wood": {"name": "木材", "color": "#9A613D", "icon": "log"},
+    "stone": {"name": "石头", "color": "#838681", "icon": "stone"},
+    "grass": {"name": "草", "color": "#689D50", "icon": "grass"}
+  },
+  "node_types": {
+    "tree": {"name": "树", "resource": "wood", "amount": 2, "uses": 3, "blocking": true, "verb": "摇树"},
+    "rock": {"name": "石头", "resource": "stone", "amount": 2, "uses": 3, "blocking": true, "verb": "敲石头"},
+    "bush": {"name": "草丛", "resource": "grass", "amount": 2, "uses": 2, "blocking": false, "verb": "割草"}
+  },
+  "resource_nodes": [
+    {"id": "t_tree_1", "type": "tree", "cell": [2, 4]},
+    {"id": "t_tree_2", "type": "tree", "cell": [4, 6]},
+    {"id": "t_tree_3", "type": "tree", "cell": [3, 8]},
+    {"id": "t_rock_1", "type": "rock", "cell": [2, 7]},
+    {"id": "t_rock_2", "type": "rock", "cell": [5, 4]},
+    {"id": "t_bush_1", "type": "bush", "cell": [5, 8]},
+    {"id": "t_bush_2", "type": "bush", "cell": [4, 9]}
+  ],
+  "placeables": [
+    {
+      "id": "restaurant",
+      "name": "简易餐厅",
+      "width": 3,
+      "height": 2,
+      "blocking": true,
+      "allow_rotation": false,
+      "anchor": "bottom_center",
+      "color": "#D98B61",
+      "description": "3×2 · 8木 4石 2草",
+      "build_cost": {"wood": 8, "stone": 4, "grass": 2}
+    },
+    {
+      "id": "boat",
+      "name": "小船",
+      "width": 3,
+      "height": 2,
+      "blocking": true,
+      "allow_rotation": false,
+      "anchor": "bottom_center",
+      "color": "#4E93B0",
+      "description": "3×2 · 20木 8石 6草",
+      "build_cost": {"wood": 20, "stone": 8, "grass": 6}
+    }
+  ],
+  "initial_objects": []
+}

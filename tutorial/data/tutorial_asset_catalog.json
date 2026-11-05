@@ -1,0 +1,47 @@
+{
+  "style": "Simple Cartoon Isometric V2 tutorial placeholders",
+  "rabbit": {
+    "frame_size": [360, 420],
+    "base_pad": 12,
+    "display_scale": 0.46,
+    "animations": {
+      "idle_down": [
+        "res://assets/art_style_v2_test/rabbit/frames/idle_down.png",
+        "res://assets/art_style_v2_test/rabbit/frames/blink_down.png"
+      ],
+      "walk_down": [
+        "res://assets/art_style_v2_test/rabbit/frames/walk_down_00.png",
+        "res://assets/art_style_v2_test/rabbit/frames/walk_down_01.png",
+        "res://assets/art_style_v2_test/rabbit/frames/walk_down_02.png",
+        "res://assets/art_style_v2_test/rabbit/frames/walk_down_03.png"
+      ],
+      "idle_side": [
+        "res://assets/art_style_v2_test/rabbit/frames/idle_side.png",
+        "res://assets/art_style_v2_test/rabbit/frames/blink_side.png"
+      ],
+      "walk_side": [
+        "res://assets/art_style_v2_test/rabbit/frames/walk_side_00.png",
+        "res://assets/art_style_v2_test/rabbit/frames/walk_side_01.png",
+        "res://assets/art_style_v2_test/rabbit/frames/walk_side_02.png",
+        "res://assets/art_style_v2_test/rabbit/frames/walk_side_03.png"
+      ],
+      "idle_up": ["res://assets/art_style_v2_test/rabbit/frames/idle_up.png"],
+      "walk_up": [
+        "res://assets/art_style_v2_test/rabbit/frames/walk_up_00.png",
+        "res://assets/art_style_v2_test/rabbit/frames/walk_up_01.png",
+        "res://assets/art_style_v2_test/rabbit/frames/walk_up_02.png",
+        "res://assets/art_style_v2_test/rabbit/frames/walk_up_03.png"
+      ]
+    }
+  },
+  "props": {
+    "tree": {"texture": "res://assets/art_style_v2_test/props/transparent/tree.png", "grid_size": [1, 1], "base_pad": 16, "display_scale": 0.28},
+    "rock": {"texture": "res://assets/art_style_v2_test/props/transparent/rock.png", "grid_size": [1, 1], "base_pad": 16, "display_scale": 0.16},
+    "bush": {"texture": "res://tutorial/assets/placeholder/bush.png", "grid_size": [1, 1], "base_pad": 16, "display_scale": 0.18},
+    "restaurant": {"texture": "res://tutorial/assets/placeholder/restaurant.png", "grid_size": [3, 2], "base_pad": 16, "display_scale": 0.5},
+    "boat": {"texture": "res://tutorial/assets/placeholder/boat.png", "grid_size": [3, 2], "base_pad": 16, "display_scale": 0.5}
+  },
+  "terrain": {
+    "grass": "res://assets/art_style_v2_test/terrain/transparent/grass.png"
+  }
+}

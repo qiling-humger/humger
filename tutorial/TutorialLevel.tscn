@@ -1,0 +1,70 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://tutorial/scripts/tutorial_game.gd" id="1_game"]
+[ext_resource type="Script" path="res://home_island/core/water_background.gd" id="2_water"]
+[ext_resource type="Script" path="res://home_island/core/sample_terrain.gd" id="3_terrain"]
+[ext_resource type="Script" path="res://home_island/scripts/home_island_rabbit.gd" id="4_player"]
+[ext_resource type="Script" path="res://home_island/scripts/home_island_placement.gd" id="5_placement"]
+[ext_resource type="Script" path="res://home_island_v2_test/scripts/v2_test_ui.gd" id="6_ui"]
+[ext_resource type="Script" path="res://tutorial/scripts/tutorial_hud.gd" id="7_hud"]
+
+[node name="TutorialLevel" type="Node2D"]
+script = ExtResource("1_game")
+config_path = "res://tutorial/data/tutorial_config.json"
+asset_catalog_path = "res://tutorial/data/tutorial_asset_catalog.json"
+save_path = "user://tutorial_world.json"
+persistence_enabled = false
+
+[node name="Water" type="Node2D" parent="."]
+script = ExtResource("2_water")
+
+[node name="Terrain" type="Node2D" parent="."]
+script = ExtResource("3_terrain")
+tile_overlap = 1.65
+grass_base_color = Color(0.474, 0.631, 0.2, 1)
+
+[node name="Entities" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Player" type="Node2D" parent="Entities"]
+script = ExtResource("4_player")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Entities/Player"]
+centered = false
+
+[node name="Camera2D" type="Camera2D" parent="Entities/Player"]
+position = Vector2(0, -38)
+zoom = Vector2(1.38, 1.38)
+enabled = true
+position_smoothing_enabled = true
+position_smoothing_speed = 6.0
+
+[node name="Placement" type="Node2D" parent="."]
+z_index = 80
+script = ExtResource("5_placement")
+
+[node name="UI" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="HUD" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("6_ui")
+
+[node name="TutorialHUD" type="CanvasLayer" parent="."]
+layer = 12
+
+[node name="HUD" type="Control" parent="TutorialHUD"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("7_hud")
