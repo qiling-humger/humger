@@ -38,11 +38,13 @@ var big_carrot_resolved := false
 var shop_open := false
 var completed := false
 var post_meal_carrot := false
+var house_entered := false
 var _loading := false
 var _hint_timer := 0.0
 
 var snake_actor: TutorialActor
 var burrow_actor: TutorialActor
+var mud_actor: TutorialActor
 var customer_actor: TutorialActor
 var employee_actor: TutorialActor
 var big_carrot_actor: TutorialActor
@@ -87,6 +89,8 @@ func _setup_markers() -> void:
 	snake_actor.scale = Vector2(1.2, 1.2)
 	burrow_actor = _make_actor("burrow", "兔窝", Color(0.72, 0.54, 0.34),
 		grid.cell_to_world(Vector2i(10, 8)))
+	mud_actor = _make_actor("mud", "泥地", Color(0.56, 0.38, 0.23),
+		grid.cell_to_world(MUD_CELL))
 
 
 func _make_actor(kind: String, label: String, color: Color, pos: Vector2) -> TutorialActor:
@@ -105,6 +109,7 @@ func _start_day(new_day: int, fresh := false) -> void:
 	dish_on_counter = false
 	shop_open = false
 	post_meal_carrot = false
+	house_entered = false
 	_clear_actor(customer_actor)
 	customer_actor = null
 	_clear_actor(wild_carrot_actor)
@@ -180,9 +185,7 @@ func _spawn_customer(kind: String, order: String) -> void:
 func _on_restaurant_built(obj: VisualSamplePlaceable) -> void:
 	restaurant_object = obj
 	restaurant_built = true
-	ui.add_toast("简易餐厅建好了，已自动开业。", Painter.TEAL)
-	if day == 1:
-		_spawn_customer("carrot_customer", "胡萝卜浓汤")
+	ui.add_toast("简易餐厅建好了。走到餐厅门口按 E 进入。", Painter.TEAL)
 	_refresh_objective()
 	save_game()
 
@@ -258,6 +261,12 @@ func _interact() -> bool:
 		ui.add_toast("捕捉胡萝卜顾客 +1。", Painter.BROWN)
 		_refresh_objective()
 		return true
+	if mud_actor != null and _near(p, mud_actor.position, 120):
+		mud += 1
+		inventory.add("mud", 1)
+		ui.add_toast("挖到泥土 +1。", Painter.BROWN)
+		_refresh_objective()
+		return true
 	if big_carrot_active and big_carrot_actor != null \
 			and _near(p, big_carrot_actor.position, 140):
 		_resolve_big_carrot()
@@ -292,6 +301,9 @@ func _interact() -> bool:
 		_complete_tutorial()
 		return true
 	if restaurant_object != null and _near(p, restaurant_object.get_footprint_center(), 150):
+		if day == 1:
+			_enter_restaurant()
+			return true
 		if not held_dish.is_empty() and employee_assigned:
 			_place_on_counter()
 		elif held_dish.is_empty():
@@ -299,28 +311,18 @@ func _interact() -> bool:
 		else:
 			ui.add_toast("走到顾客身边交付。", Painter.BROWN)
 		return true
-	if day == 4:
-		if _near(p, grid.cell_to_world(MUD_CELL), 120):
-			mud += 1
-			ui.add_toast("挖到泥土 +1。", Painter.BROWN)
-			_refresh_objective()
-			return true
-		if _near(p, grid.cell_to_world(WATER_CELL), 120):
-			water_count += 1
-			ui.add_toast("取到水 +1。", Painter.TEAL)
-			_refresh_objective()
-			return true
+	if _near(p, grid.cell_to_world(WATER_CELL), 120):
+		water_count += 1
+		ui.add_toast("取到水 +1。", Painter.TEAL)
+		_refresh_objective()
+		return true
 	return false
 
 
 func _talk_snake() -> void:
 	if not snake_met:
 		snake_met = true
-		if day == 1:
-			has_carrot += 1
-			ui.add_toast("蛇商人：送你 1 根胡萝卜试用。1 键购买胡萝卜。", Painter.TEAL)
-		else:
-			ui.add_toast("蛇商人：想买点什么？", Painter.BROWN)
+		ui.add_toast("蛇商人：想买点什么？", Painter.BROWN)
 	if day == 3 and not employee_hired:
 		employee_hired = true
 		_spawn_employee()
@@ -499,6 +501,19 @@ func _resolve_big_carrot() -> void:
 	save_game()
 
 
+func _enter_restaurant(change_scene := true) -> void:
+	if day != 1 or not restaurant_built:
+		return
+	if not house_entered:
+		house_entered = true
+		wallet += 20
+		day_income += 20
+		ui.add_toast("进入餐厅内部。第一关完成，获得 20 金币启动资金。", Painter.TEAL)
+	save_game()
+	if change_scene:
+		get_tree().change_scene_to_file("res://tutorial/RestaurantInterior.tscn")
+
+
 func _sleep() -> void:
 	var missing := _sleep_blocker()
 	if not missing.is_empty():
@@ -513,8 +528,8 @@ func _sleep() -> void:
 func _sleep_blocker() -> String:
 	match day:
 		1:
-			if not first_sale:
-				return "先完成第一笔订单，再去睡觉。"
+			if not house_entered:
+				return "先进入餐厅内部，再回兔窝睡觉。"
 		2:
 			if not day_sale:
 				return "先完成兔子顾客的订单。"
@@ -565,19 +580,13 @@ func _compute_objective() -> String:
 		return "新手关完成"
 	match day:
 		1:
-			if not snake_met:
-				return "去东边找蛇商人（E）"
-			if has_carrot <= 0 and not day_sale:
-				return "在蛇商处拿/买胡萝卜"
 			if not restaurant_built:
 				if inventory.get_count("wood") < 8 or inventory.get_count("stone") < 4 \
-						or inventory.get_count("grass") < 2:
-					return "采集 8木 / 4石 / 2草"
+						or inventory.get_count("grass") < 2 or inventory.get_count("mud") < 6:
+					return "采集 8木 / 4石 / 2草 / 6泥土"
 				return "按 B 建造简易餐厅"
-			if not day_sale:
-				if held_dish.is_empty():
-					return "在餐厅按 E 做胡萝卜浓汤"
-				return "把汤送给胡萝卜顾客"
+			if not house_entered:
+				return "走到餐厅门口按 E 进入"
 			return "回兔窝睡觉"
 		2:
 			if not day_sale:
@@ -613,7 +622,7 @@ func _compute_objective() -> String:
 func _compute_hint() -> String:
 	match day:
 		1:
-			return "WASD 移动 · 靠近资源按 E · B 打开建造"
+			return "WASD 移动 · 靠近树/石头/草/泥地按 E · B 建造餐厅"
 		2:
 			return "蛇商在岛东侧；做菜后走到顾客身边按 E"
 		3:
@@ -693,7 +702,8 @@ func _write_state() -> void:
 		"day_income": day_income, "orders_completed": orders_completed,
 		"employee_hired": employee_hired, "employee_assigned": employee_assigned,
 		"carrot_hunts": carrot_hunts, "big_carrot_active": big_carrot_active,
-		"big_carrot_resolved": big_carrot_resolved, "completed": completed
+		"big_carrot_resolved": big_carrot_resolved, "house_entered": house_entered,
+		"completed": completed
 	}
 	var file := FileAccess.open(state_path, FileAccess.WRITE)
 	if file:
@@ -731,6 +741,7 @@ func _restore_after_load() -> void:
 	carrot_hunts = int(data.get("carrot_hunts", 0))
 	big_carrot_active = bool(data.get("big_carrot_active", false))
 	big_carrot_resolved = bool(data.get("big_carrot_resolved", false))
+	house_entered = bool(data.get("house_entered", false))
 	completed = bool(data.get("completed", false))
 	restaurant_object = _find_restaurant()
 	boat_object = _find_boat()

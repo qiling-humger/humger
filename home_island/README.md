@@ -23,7 +23,7 @@ F:\humger\tools\godot\Godot_v4.7.2-stable_win64_console.exe `
   res://tutorial/tests/TutorialLogicTest.tscn
 ```
 
-结果：**28 / 28**。
+结果：**24 / 24**。
 
 V2 风格测试场景：
 

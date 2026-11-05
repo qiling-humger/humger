@@ -27,6 +27,8 @@ func _draw() -> void:
 			_draw_big_carrot()
 		"burrow":
 			_draw_burrow()
+		"mud":
+			_draw_mud()
 		"rabbit_customer":
 			_draw_rabbit()
 		"cat_customer":
@@ -91,6 +93,14 @@ func _draw_burrow() -> void:
 	draw_colored_polygon(Painter.ellipse_points(Vector2(0, -2), 24, 13),
 		Color(0.40, 0.26, 0.18, 0.95))
 	draw_circle(Vector2(0, -2), 8, Color(0.13, 0.10, 0.09, 0.9))
+
+
+func _draw_mud() -> void:
+	draw_colored_polygon(Painter.ellipse_points(Vector2(0, 0), 42, 18),
+		Color(0.42, 0.27, 0.16, 0.55))
+	draw_colored_polygon(Painter.ellipse_points(Vector2(-8, -2), 26, 11),
+		Color(0.56, 0.38, 0.23, 0.75))
+	draw_circle(Vector2(16, 2), 5, Color(0.35, 0.24, 0.15, 0.75))
 
 
 func _draw_rabbit() -> void:

@@ -41,29 +41,23 @@ func _run() -> void:
 				flower += 1
 	_check(sand == 72 and road == 9 and flower == 12, "沙滩/道路/花草分布符合参考图")
 	_check(game.day == 1, "新手关从第 1 天开始")
-	_check(game.objective_text.contains("蛇商"), "第 1 天先引导找蛇商")
+	_check(game.objective_text.contains("泥土"), "第 1 天需要泥土")
 	game.inventory.add("wood", 30)
 	game.inventory.add("stone", 20)
 	game.inventory.add("grass", 12)
-	game.player.position = game.snake_actor.position
-	_check(game._interact(), "E 与蛇商交互")
-	_check(game.snake_met and game.has_carrot == 1, "蛇商送免费胡萝卜")
-	game.shop_open = false
+	game.inventory.add("mud", 6)
 
 	var restaurant_def: Dictionary = game.find_def("restaurant")
 	var restaurant_origin := _find_empty(Vector2i(3, 2))
 	var restaurant: VisualSamplePlaceable = game.spawn_placeable(
 		restaurant_def, restaurant_origin, 0)
 	_check(restaurant != null, "餐厅建成")
-	_check(game.restaurant_built and game.customer_actor != null, "餐厅开业后顾客出现")
+	_check(game.restaurant_built and game.customer_actor == null, "第 1 天没有胡萝卜顾客")
 	_check(game.inventory.get_count("wood") == 22, "餐厅扣除木材")
-
+	_check(game.inventory.get_count("mud") == 0, "餐厅扣除泥土")
 	game.player.position = restaurant.get_footprint_center()
-	_check(game._interact(), "餐厅 E 做汤")
-	_check(game.held_dish == "胡萝卜浓汤", "做出胡萝卜浓汤")
-	game.player.position = game.customer_actor.position
-	_check(game._interact(), "第一笔订单交付")
-	_check(game.wallet == 18 and game.first_sale, "第一笔收入 18 金币")
+	game._enter_restaurant(false)
+	_check(game.house_entered and game.wallet == 20, "进入餐厅获得 20 金币启动资金")
 	game.player.position = game.burrow_actor.position
 	game._sleep()
 	_check(game.day == 2 and game.customer_actor != null, "睡觉进入第 2 天")
@@ -73,12 +67,12 @@ func _run() -> void:
 	game._interact()
 	game._buy_carrot()
 	game.shop_open = false
-	_check(game.wallet == 12 and game.has_carrot == 1, "向蛇商购买胡萝卜")
+	_check(game.wallet == 14 and game.has_carrot == 1, "向蛇商购买胡萝卜")
 	game.player.position = game.restaurant_object.get_footprint_center()
 	game._interact()
 	game.player.position = game.customer_actor.position
 	game._interact()
-	_check(game.wallet == 36 and game.rabbit_meat == 1, "第 2 天兔子订单 + 兔肉")
+	_check(game.wallet == 38 and game.rabbit_meat == 1, "第 2 天兔子订单 + 兔肉")
 	game.player.position = game.burrow_actor.position
 	game._sleep()
 	_check(game.day == 3 and game.customer_actor != null, "进入第 3 天")
@@ -99,7 +93,7 @@ func _run() -> void:
 		" active=", game.active_order, " customer=", game.customer_actor != null,
 		" emp=", game.employee_actor != null, " wallet=", game.wallet,
 		" day_sale=", game.day_sale, " state=", game.employee_actor.state_text if game.employee_actor else "none")
-	_check(game.day_sale and game.wallet == 66, "阿水自动送餐并结算")
+	_check(game.day_sale and game.wallet == 68, "阿水自动送餐并结算")
 	game.carrot_hunts = 2
 	game.player.position = game.burrow_actor.position
 	game._sleep()

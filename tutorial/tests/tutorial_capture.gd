@@ -25,6 +25,7 @@ func _ready() -> void:
 	game.inventory.add("wood", 30)
 	game.inventory.add("stone", 20)
 	game.inventory.add("grass", 12)
+	game.inventory.add("mud", 6)
 	game.player.position = game.snake_actor.position
 	game._interact()
 	game.shop_open = false

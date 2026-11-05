@@ -57,7 +57,8 @@
   "resource_order": [
     "wood",
     "stone",
-    "grass"
+    "grass",
+    "mud"
   ],
   "resource_types": {
     "wood": {
@@ -73,6 +74,11 @@
     "stone": {
       "name": "石头",
       "color": "#838681",
+      "icon": "stone"
+    },
+    "mud": {
+      "name": "泥土",
+      "color": "#A9784F",
       "icon": "stone"
     }
   },
@@ -314,11 +320,12 @@
       "allow_rotation": false,
       "anchor": "bottom_center",
       "color": "#D98B61",
-      "description": "3×2 · 8木 4石 2草",
+      "description": "3×2 · 8木 4石 2草 6泥土",
       "build_cost": {
         "wood": 8,
         "stone": 4,
-        "grass": 2
+        "grass": 2,
+        "mud": 6
       }
     },
     {
