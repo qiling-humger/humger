@@ -122,8 +122,11 @@ func _run() -> void:
 	var boat: VisualSamplePlaceable = game.spawn_placeable(boat_def, boat_origin, 0)
 	_check(boat != null and game.boat_built, "小船建成")
 	game.player.position = boat.get_footprint_center()
-	game._interact()
-	_check(game.completed, "登船完成新手关")
+	var launch_key := InputEventKey.new()
+	launch_key.keycode = KEY_F
+	launch_key.pressed = true
+	game._unhandled_input(launch_key)
+	_check(game.completed, "按 F 启航完成新手关")
 
 
 func _find_empty(size: Vector2i) -> Vector2i:

@@ -33,6 +33,9 @@ res://tutorial/TutorialLevel.tscn
 | 建造 / 退出 | `B` / `Esc` |
 | 选择建造物件 | `1`–`3` |
 | 放置 | 建造模式下鼠标左键 |
+| 拖动餐厅厨房/桌椅 | 餐厅内部按住鼠标左键拖动 |
+| 餐厅返回 | `E` / `Esc` |
+| 小船启航 | 靠近小船按 `E`，或直接按 `F` |
 | 保存 / 读取 | `F5` / `F9` |
 | 提示 | `H` |
 
@@ -42,6 +45,7 @@ res://tutorial/TutorialLevel.tscn
 - 参考布局的水域、沙滩、草地、道路、花草、兔屋/餐厅/码头区域
 - 五天新手关：第 1 天采集泥土/材料 → 建餐厅 → 进入餐厅内部；之后是顾客、员工送餐、大胡萝卜和造船
 - 餐厅是独立室内场景：`res://tutorial/RestaurantInterior.tscn`（E 进入/返回）
+- 餐厅厨房可拖动布局：搅拌器、菜刀、菜板、水池、货架、餐盘、洗碗台、餐桌、椅子，全部支持网格吸附、碰撞阻挡和拖动
 - 网格建造、搬动、旋转、拆除、绿红预览
 - 自动保存/启动恢复
 
@@ -71,6 +75,10 @@ $godot = "F:\humger\tools\godot\Godot_v4.7.2-stable_win64_console.exe"
 & $godot --headless --path F:\humger\HamburgerStory `
   res://tutorial/tests/TutorialLogicTest.tscn
 
+# 餐厅厨房拖动/碰撞
+& $godot --headless --path F:\humger\HamburgerStory `
+  res://tutorial/tests/RestaurantInteriorTest.tscn
+
 # V2 风格测试场景
 & $godot --headless --path F:\humger\HamburgerStory `
   res://home_island_v2_test/tests/V2StyleTest.tscn
@@ -79,6 +87,7 @@ $godot = "F:\humger\tools\godot\Godot_v4.7.2-stable_win64_console.exe"
 当前结果：
 
 - 新手关逻辑：**24 / 24**
+- 餐厅厨房布局：**17 / 17**
 - V2 风格测试：**19 / 19**
 
 ## 说明

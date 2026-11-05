@@ -193,7 +193,7 @@ func _on_restaurant_built(obj: VisualSamplePlaceable) -> void:
 func _on_boat_built(obj: VisualSamplePlaceable) -> void:
 	boat_object = obj
 	boat_built = true
-	ui.add_toast("小船建好了！走到船边按 E 启航。", Painter.TEAL)
+	ui.add_toast("小船建好了！走到船边按 E，或直接按 F 启航。", Painter.TEAL)
 	_refresh_objective()
 	save_game()
 
@@ -231,6 +231,10 @@ func _unhandled_input(event: InputEvent) -> void:
 				shop_open = false
 				get_viewport().set_input_as_handled()
 				return
+		if key == KEY_F and day >= 5 and boat_built:
+			_complete_tutorial()
+			get_viewport().set_input_as_handled()
+			return
 		if key == KEY_E and not placement.build_mode and not placement.is_dragging():
 			if _interact():
 				get_viewport().set_input_as_handled()
@@ -297,7 +301,7 @@ func _interact() -> bool:
 			ui.add_toast("顾客还在等餐。去餐厅做菜。", Painter.BROWN)
 			return true
 	if boat_built and boat_object != null \
-			and _near(p, boat_object.get_footprint_center(), 150):
+			and _near(p, boat_object.get_footprint_center(), 220):
 		_complete_tutorial()
 		return true
 	if restaurant_object != null and _near(p, restaurant_object.get_footprint_center(), 150):
@@ -615,7 +619,7 @@ func _compute_objective() -> String:
 		5:
 			if not boat_built:
 				return "去东南船坞按 B 造小船"
-			return "靠近小船按 E 启航"
+			return "靠近小船按 E，或按 F 启航"
 	return ""
 
 
